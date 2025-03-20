@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.ui.theme
+package org.saudigitus.e_prescription.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

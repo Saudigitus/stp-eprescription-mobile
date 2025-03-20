@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.ui.theme
+package org.saudigitus.e_prescription.presentation.theme
 
 import android.app.Activity
 import android.os.Build
