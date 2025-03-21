@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.presentation.screens
+package org.saudigitus.e_prescription.presentation.screens.scan
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement

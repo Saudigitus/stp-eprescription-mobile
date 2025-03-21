@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.presentation.screens
+package org.saudigitus.e_prescription.presentation.screens.scan
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
