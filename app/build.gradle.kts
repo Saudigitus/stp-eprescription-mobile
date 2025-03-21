@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.barcodeScanner.zxing.android)
     implementation(libs.hilt.android)
     implementation(libs.timber)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     ksp(libs.hilt.compiler)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
