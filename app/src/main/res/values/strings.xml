@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">e-prescription</string>
+    <string name="scan_prescription">Scan Prescription</string>
 </resources>
