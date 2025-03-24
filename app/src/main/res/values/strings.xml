@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">e-prescription</string>
     <string name="scan_prescription">Scan Prescription</string>
+    <string name="prescriptions">Prescriptions</string>
+    <string name="save">Save</string>
+    <string name="open_with">Open with</string>
+    <string name="failed_save">Error when prescribing medication (%s)</string>
+    <string name="given_qtd_gt_requested_qtd"><![CDATA[Given quantity is greater than requested (%s > %s)]]></string>
+    <string name="completed_medicine">Completed medicine</string>
+    <string name="incomplete_medicine">Incomplete medicine</string>
+    <string name="non_existent_medicine">Non-existent medicine</string>
+    <string name="summary_label">Confirm the indicators below to save the data</string>
+    <string name="cancel">Cancel</string>
 </resources>
