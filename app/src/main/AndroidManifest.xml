@@ -32,7 +32,7 @@
             android:theme="@style/Theme.Eprescription" />
 
         <activity
-            android:name=".presentation.EPrescriptionActivity"
+            android:name=".presentation.screens.login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Eprescription">
