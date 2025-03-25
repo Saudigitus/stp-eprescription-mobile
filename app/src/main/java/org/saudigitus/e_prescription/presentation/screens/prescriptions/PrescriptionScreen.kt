@@ -52,7 +52,6 @@ val cardState = listOf(
 
 @Composable
 fun PrescriptionScreen(
-    modifier: Modifier = Modifier,
     viewModel: PrescriptionViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -73,7 +72,7 @@ fun PrescriptionScreen(
         }
     }
 
-    PrescriptionUI(modifier, uiState, cache) {
+    PrescriptionUI(uiState = uiState, inputFieldModels = cache) {
         when(it) {
             is PrescriptionUiEvent.OnBack -> {}
             else -> {

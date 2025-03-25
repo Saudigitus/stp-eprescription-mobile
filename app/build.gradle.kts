@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.timber)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.navigation.compose)
 
     ksp(libs.hilt.compiler)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
