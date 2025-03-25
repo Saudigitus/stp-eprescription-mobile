@@ -14,4 +14,87 @@
     <string name="scan_label">Press the scan icon to scan the Qr code of your prescriptions</string>
     <string name="prescription_ref">Prescription reference</string>
     <string name="validate">Validate</string>
+
+    <!-- Time -->
+    <string name="period">Period</string>
+    <string name="DAILY">Daily</string>
+    <string name="WEEKLY">Weekly</string>
+    <string name="MONTHLY">Monthly</string>
+    <string name="YEARLY">Yearly</string>
+
+    <!-- Preferences -->
+    <string name="username_pref_key" translatable="false">logged_in_user</string>
+    <string name="language_pref_key" translatable="false">language_preference</string>
+    <string name="logout_pref_key" translatable="false">logout</string>
+    <string name="force_sync_pref_key" translatable="false">force_sync</string>
+    <string name="use_mic_pref_key" translatable="false">use_mic</string>
+    <string name="language_pref_default" translatable="false">en</string>
+
+    <string name="logout_success_message">Successfully logged out</string>
+
+    <!-- Sync -->
+    <string name="metadata_sync_in_progress">Syncing metadata&#8230;</string>
+    <string name="metadata_sync_error">Unable to complete metadata sync</string>
+    <string name="data_sync_in_progress">Syncing data&#8230;</string>
+    <string name="data_sync_error">Unable to complete data sync</string>
+    <string name="metadata_sync_completed">Metadata sync completed!</string>
+    <string name="sync_completed">Syncing completed!</string>
+
+    <string name="syncing_configuration">Syncing your Configuration</string>
+    <string name="syncing_data_shortly">Your Data will shortly be synced</string>
+    <string name="syncing_data">Syncing your Data</string>
+    <string name="configuration_ready">Your Configuration is ready</string>
+    <string name="data_ready">Your Data is ready</string>
+    <string name="configuration_sync_failed">Configuration sync failed</string>
+    <string name="data_sync_failed">Data sync failed</string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">Something went wrong. Please check that server URL, username and password are correct and try again.</string>
+    <string name="login_error_error_response">Oops! Something went wrong on the server side.</string>
+    <string name="login_error_no_dhis_instance">The provided URL is not a DHIS2 server.</string>
+    <string name="login_error_bad_credentials">The username and/or password are incorrect</string>
+    <string name="login_error_unknown_host">Unknown server</string>
+    <string name="online_search_parsing_error">Error while parsing results</string>
+    <string name="error_unexpected">Something unexpected went wrong.</string>
+    <string name="error_many_requests">The server is a bit busy at this moment. Please try a bit later.</string>
+    <string name="error_already_authenticated">The user is already logged in.</string>
+    <string name="error_already_executed">The request has already been executed.</string>
+    <string name="error_api_invalid_query">Server request is invalid.</string>
+    <string name="error_create_existing_error">Creation aborted. The object already exists.</string>
+    <string name="error_export_login">Please login to export the database.</string>
+    <string name="error_export_encrypted">Exporting an encrypted database is not supported.</string>
+    <string name="error_import_exist">You are importing an already existing database.</string>
+    <string name="error_import_logout">Please logout to import a new database.</string>
+    <string name="error_import_version">The version of the imported database is higher than supported.</string>
+    <string name="error_user_no_authenticated">There is no user authenticated.</string>
+    <string name="error_user_no_authenticated_offline">There is no user authenticated offline.</string>
+    <string name="error_different_offline_user">You are trying to login offline with a different user.</string>
+    <string name="error_object_update">The object could not be updated.</string>
+    <string name="error_object_insert">The object could not be inserted.</string>
+    <string name="error_ownership_access">You do not have access.</string>
+    <string name="error_null_url">The server URL is missing. Please enter URL.</string>
+    <string name="error_server_malformed">The server URL is not well formed. Please check it.</string>
+    <string name="error_settings_app_not_supported">This version of the Settings Web App is not supported.</string>
+    <string name="error_settings_app_not_intalled">The Settings Web App is not installed in the server.</string>
+    <string name="error_socket_timeout">The server took too much time to respond. We canceled the request. </string>
+    <string name="error_url_not_found">We couldn´t find the URL. Please verify it.</string>
+    <string name="error_account_disabled">Your user account have been disabled. If this is an error, contact your administrator.</string>
+    <string name="error_account_locked">Your user account is locked. If this is an error, contact your administrator.</string>
+    <string name="error_set_value">The value could not be set.</string>
+    <string name="error_ssl">There is a problem with the server certificates. Please, contact your administrator.</string>
+    <string name="login_error_null_pass">Password is missing. Please fill this field.</string>
+    <string name="login_error_null_username">Username is missing. Please fill this field.</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="error_wrong_server_url">Wrong server url</string>
+    <string name="server_url">Url do servidor</string>
+    <string name="username">Nome do usuário</string>
+    <string name="password">Palavra-passe</string>
+    <string name="login">Entrar</string>
+    <string name="url">https://</string>
+
+    <string name="success_data_sync">Dados syncronizados com sucesso</string>
+    <string name="error_data_sync">Ocorreu um erro durante a sincronização de dados.</string>
+    <string name="sync">Sincronizar</string>
+    <string name="logout">Logout</string>
 </resources>
