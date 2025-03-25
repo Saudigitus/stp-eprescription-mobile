@@ -21,6 +21,8 @@ navigationCompose = "2.8.9"
 preferenceKtx = "1.2.1"
 workRuntimeKtx = "2.10.0"
 hiltCommon = "1.2.0"
+animationGraphics = "1.7.8"
+lottieCompose = "6.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,7 +41,6 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 dhis2-android-sdk = { group = "org.hisp.dhis", name = "android-core", version.ref = "dhis2sdk" }
 dhis2-mobile-designsystem = { group = "org.hisp.dhis.mobile", name = "designsystem", version.ref = "designSystem" }
-barcodeScanner-scanner = { group = "me.dm7.barcodescanner", name = "zxing", version.ref = "zxingbarcode" }
 barcodeScanner-zxing-android = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxingandroid" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -50,6 +51,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
 androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+androidx-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics", version.ref = "animationGraphics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
