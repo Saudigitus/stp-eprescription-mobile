@@ -14,6 +14,7 @@
     <string name="scan_label">Press the scan icon to scan the Qr code of your prescriptions</string>
     <string name="prescription_ref">Prescription reference</string>
     <string name="validate">Validate</string>
+    <string name="login_info">Enter your access credentials to continue.</string>
 
     <!-- Time -->
     <string name="period">Period</string>
