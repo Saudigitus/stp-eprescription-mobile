@@ -151,7 +151,7 @@ fun LoginScreen(
                         )
                     }
                 },
-                isError = loginUiState.isServerUrlValid(),
+                isError = !loginUiState.isServerUrlValid(),
                 label = {
                     Text(text = stringResource(R.string.server_url))
                 },
@@ -179,7 +179,7 @@ fun LoginScreen(
                         )
                     }
                 },
-                isError = loginUiState.isUserNameValid(),
+                isError = !loginUiState.isUserNameValid(),
                 label = {
                     Text(text = stringResource(R.string.username))
                 },
@@ -223,7 +223,7 @@ fun LoginScreen(
                         }
                     }
                 },
-                isError = loginUiState.isPasswordValid(),
+                isError = !loginUiState.isPasswordValid(),
                 label = {
                     Text(text = stringResource(R.string.password))
                 },

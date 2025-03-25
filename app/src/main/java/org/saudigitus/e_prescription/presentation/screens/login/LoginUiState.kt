@@ -13,7 +13,7 @@ data class LoginUiState(
 
     fun isUserNameValid(): Boolean = username.trim().isNotEmpty()
 
-    fun isPasswordValid(): Boolean = password.trim().length > 5
+    fun isPasswordValid(): Boolean = password.trim().isNotEmpty()
 
     fun enableLoginBtn(): Boolean = isServerUrlValid() && isUserNameValid() && isPasswordValid()
 }

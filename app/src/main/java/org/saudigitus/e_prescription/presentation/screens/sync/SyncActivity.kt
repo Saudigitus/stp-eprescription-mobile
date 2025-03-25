@@ -25,8 +25,6 @@ class SyncActivity: ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-
-
             viewModel.sync()
 
             EPrescriptionTheme {
