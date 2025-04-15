@@ -37,8 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.BottomSheetState
-import org.saudigitus.e_prescription.presentation.theme.success
-import org.saudigitus.e_prescription.presentation.theme.warning
+import org.saudigitus.e_prescription.presentation.theme.darkSuccess
+import org.saudigitus.e_prescription.presentation.theme.darkWarning
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -153,7 +153,7 @@ fun SaveBottomSheet(
                             title = stringResource(state.indicators.completed.first),
                             subtitle = "${state.indicators.completed.second}",
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.success,
+                                containerColor = darkSuccess,
                                 contentColor = Color.White
                             )
                         )
@@ -165,7 +165,7 @@ fun SaveBottomSheet(
                             title = stringResource(state.indicators.incomplete.first),
                             subtitle = "${state.indicators.incomplete.second}",
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.warning,
+                                containerColor = darkWarning,
                                 contentColor = Color.White
                             )
                         )

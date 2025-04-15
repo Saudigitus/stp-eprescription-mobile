@@ -4,10 +4,11 @@ import org.saudigitus.e_prescription.data.model.Prescription
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.BottomSheetState
 
 data class PrescriptionUiState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val displayErrors: Boolean = false,
     val isSaving: Boolean = false,
     val prescriptions: List<Prescription> = emptyList(),
     val errorState: BottomSheetState.ErrorState? = null,
     val saveState: BottomSheetState.SaveState? = null,
+    val isSaved: Boolean = false
 )

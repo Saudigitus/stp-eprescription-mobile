@@ -10,8 +10,10 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import org.hisp.dhis.android.core.D2
 import org.saudigitus.e_prescription.data.local.PreferenceProvider
+import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.local.Sdk.d2
 import org.saudigitus.e_prescription.data.local.repository.PreferenceProviderImpl
+import org.saudigitus.e_prescription.data.local.repository.PrescriptionRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.SyncManagerRepository
 import org.saudigitus.e_prescription.data.remote.UserManagerRepository
 import org.saudigitus.e_prescription.data.remote.WorkManagerRepository
@@ -68,4 +70,8 @@ object AppModule {
     @Provides
     @Singleton
     fun providesNetworkUtils(@ApplicationContext context: Context) = NetworkUtils(context)
+
+    @Provides
+    @Singleton
+    fun providePrescriptionRepository(d2: D2): PrescriptionRepository = PrescriptionRepositoryImpl(d2)
 }

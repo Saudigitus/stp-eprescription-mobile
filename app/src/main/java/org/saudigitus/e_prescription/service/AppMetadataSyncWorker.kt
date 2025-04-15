@@ -11,7 +11,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.data.local.PreferenceProvider
-import org.saudigitus.e_prescription.data.model.SyncResult
 import org.saudigitus.e_prescription.data.remote.SyncManagerRepository
 import org.saudigitus.e_prescription.utils.Commons
 import org.saudigitus.e_prescription.utils.Constants
@@ -19,30 +18,29 @@ import org.saudigitus.e_prescription.utils.DateUtils
 import org.saudigitus.e_prescription.utils.ResourceManager
 import java.time.LocalDateTime
 
-@Suppress("SameParameterValue")
 @HiltWorker
-class AppDataSyncWorker
+class AppMetadataSyncWorker
 @AssistedInject constructor(
     @Assisted context: Context,
-    @Assisted workerParams: WorkerParameters,
+    @Assisted workParams: WorkerParameters,
     private val syncManager: SyncManagerRepository,
     private val preferenceProvider: PreferenceProvider,
     private val resourceManager: ResourceManager
-) : Worker(context, workerParams) {
+): Worker(context, workParams) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
-        var teiSynced = false
+        var metadataSynced = false
         var errorPayload: Data? = null
 
         triggerNotification(
             R.string.app_name,
-            R.string.data_sync_in_progress,
+            R.string.metadata_sync_in_progress,
             R.drawable.ic_sync
         )
 
         try {
-            syncManager.syncData()
-            teiSynced = true
+            syncManager.syncMetadata()
+            metadataSynced = true
         } catch (e: Exception) {
             e.printStackTrace()
 
@@ -53,25 +51,21 @@ class AppDataSyncWorker
 
         triggerNotification(
             R.string.app_name,
-            if (teiSynced) R.string.sync_completed else R.string.data_sync_error,
-            if (teiSynced) R.drawable.ic_status_synced
+            if (metadataSynced) R.string.metadata_sync_completed
+            else R.string.metadata_sync_error,
+            if (metadataSynced) R.drawable.ic_status_synced
             else R.drawable.ic_sync_warning
         )
 
         val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
-        preferenceProvider.setValue(Constants.LAST_DATA_SYNC_DATE, syncDate)
-        preferenceProvider.setValue(Constants.LAST_DATA_SYNC_STATUS, teiSynced)
+        preferenceProvider.setValue(Constants.LAST_METADATA_SYNC_DATE, syncDate)
+        preferenceProvider.setValue(Constants.LAST_METADATA_SYNC_STATUS, metadataSynced)
 
-        val syncStatus: SyncResult = if (teiSynced) {
-            syncManager.checkSyncStatus()
-        } else { SyncResult.ERROR }
+        cancelNotification()
 
-        preferenceProvider.setValue(Constants.LAST_DATA_SYNC_RESULT, syncStatus.name)
+        syncManager.schedulePeriodicMetadataSync()
 
-        cancelNotification(Constants.SYNC_DATA_NOTIFICATION_ID)
-        syncManager.schedulePeriodicDataSync()
-
-        return if (teiSynced) {
+        return if (metadataSynced) {
             Result.success()
         } else {
             errorPayload?.let {
@@ -83,16 +77,16 @@ class AppDataSyncWorker
     private fun triggerNotification(title: Int, message: Int, icon: Int?) {
         Commons.triggerNotification(
             applicationContext,
-            Constants.SYNC_DATA_NOTIFICATION_ID,
-            Constants.SYNC_DATA_NOTIFICATION_CHANNEL,
-            Constants.SYNC_DATA_CHANNEL_NAME,
+            Constants.SYNC_METADATA_NOTIFICATION_ID,
+            Constants.SYNC_METADATA_NOTIFICATION_CHANNEL,
+            Constants.SYNC_METADATA_CHANNEL_NAME,
             applicationContext.getString(title),
             applicationContext.getString(message),
             icon
         )
     }
 
-    private fun cancelNotification(notificationId: Int) {
-        Commons.cancelNotification(applicationContext, notificationId)
+    private fun cancelNotification() {
+        Commons.cancelNotification(applicationContext, Constants.SYNC_METADATA_NOTIFICATION_ID)
     }
 }

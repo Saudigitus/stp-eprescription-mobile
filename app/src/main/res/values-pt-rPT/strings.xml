@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scan_prescription">Digitalizar Prescrição</string>
+    <string name="prescriptions">Prescrições</string>
+    <string name="save">Guardar</string>
+    <string name="open_with">Abrir com</string>
+    <string name="failed_save">Erro ao prescrever medicação (%s)</string>
+    <string name="given_qtd_gt_requested_qtd"><![CDATA[A quantidade fornecida é superior à solicitada (%s > %s)]]></string>
+    <string name="completed_medicine">Medicação concluída</string>
+    <string name="incomplete_medicine">Medicação incompleta</string>
+    <string name="non_existent_medicine">Medicação não fornecida</string>
+    <string name="summary_label">Confirme os indicadores abaixo para guardar os dados</string>
+    <string name="cancel">Cancelar</string>
+    <string name="scan_label">Pressione o ícone de digitalização para ler o código QR das suas prescrições</string>
+    <string name="prescription_ref">Referência da prescrição</string>
+    <string name="validate">Validar</string>
+    <string name="login_info">Introduza as suas credenciais de acesso para continuar.</string>
+    <string name="posology">Posologia %s</string>
+    <string name="requested_qtd">Qtd. Solicitada: %s</string>
+
+    <string name="logout_success_message">Sessão terminada com sucesso</string>
+
+    <!-- Tempo -->
+    <string name="period">Período</string>
+    <string name="DAILY">Diário</string>
+    <string name="WEEKLY">Semanal</string>
+    <string name="MONTHLY">Mensal</string>
+    <string name="YEARLY">Anual</string>
+
+    <!-- Sincronização -->
+    <string name="metadata_sync_in_progress">A sincronizar metadados&#8230;</string>
+    <string name="metadata_sync_error">Não foi possível concluir a sincronização de metadados</string>
+    <string name="data_sync_in_progress">A sincronizar dados&#8230;</string>
+    <string name="data_sync_error">Não foi possível concluir a sincronização de dados</string>
+    <string name="metadata_sync_completed">Sincronização de metadados concluída!</string>
+    <string name="sync_completed">Sincronização concluída!</string>
+
+    <string name="syncing_configuration">A sincronizar a sua configuração</string>
+    <string name="syncing_data_shortly">Os seus dados serão sincronizados em breve</string>
+    <string name="syncing_data">A sincronizar os seus dados</string>
+    <string name="configuration_ready">A sua configuração está pronta</string>
+    <string name="data_ready">Os seus dados estão prontos</string>
+    <string name="configuration_sync_failed">Falha na sincronização da configuração</string>
+    <string name="data_sync_failed">Falha na sincronização dos dados</string>
+
+    <!-- Códigos de erro do SDK -->
+    <string name="login_error_unsuccessful_response">Algo correu mal. Verifique se o URL do servidor, o nome de utilizador e a palavra-passe estão corretos e tente novamente.</string>
+    <string name="login_error_error_response">Ups! Algo correu mal no servidor.</string>
+    <string name="login_error_no_dhis_instance">O URL fornecido não corresponde a um servidor DHIS2.</string>
+    <string name="login_error_bad_credentials">O nome de utilizador e/ou a palavra-passe estão incorretos</string>
+    <string name="login_error_unknown_host">Servidor desconhecido</string>
+    <string name="online_search_parsing_error">Erro ao interpretar os resultados</string>
+    <string name="error_unexpected">Ocorreu um erro inesperado.</string>
+    <string name="error_many_requests">O servidor está ocupado neste momento. Por favor, tente novamente mais tarde.</string>
+    <string name="error_already_authenticated">O utilizador já iniciou sessão.</string>
+    <string name="error_already_executed">O pedido já foi executado.</string>
+    <string name="error_api_invalid_query">O pedido ao servidor é inválido.</string>
+    <string name="error_create_existing_error">Criação abortada. O objeto já existe.</string>
+    <string name="error_export_login">Por favor, inicie sessão para exportar a base de dados.</string>
+    <string name="error_export_encrypted">A exportação de uma base de dados encriptada não é suportada.</string>
+    <string name="error_import_exist">Está a importar uma base de dados que já existe.</string>
+    <string name="error_import_logout">Por favor, termine a sessão para importar uma nova base de dados.</string>
+    <string name="error_import_version">A versão da base de dados importada é superior à suportada.</string>
+    <string name="error_user_no_authenticated">Nenhum utilizador autenticado.</string>
+    <string name="error_user_no_authenticated_offline">Nenhum utilizador autenticado em modo offline.</string>
+    <string name="error_different_offline_user">Está a tentar iniciar sessão offline com um utilizador diferente.</string>
+    <string name="error_object_update">O objeto não pôde ser atualizado.</string>
+    <string name="error_object_insert">O objeto não pôde ser inserido.</string>
+    <string name="error_ownership_access">Não tem permissão de acesso.</string>
+    <string name="error_null_url">O URL do servidor está em falta. Por favor, insira um URL.</string>
+    <string name="error_server_malformed">O URL do servidor está mal formado. Por favor, verifique-o.</string>
+    <string name="error_settings_app_not_supported">Esta versão da aplicação Web de Definições não é suportada.</string>
+    <string name="error_settings_app_not_intalled">A aplicação Web de Definições não está instalada no servidor.</string>
+    <string name="error_socket_timeout">O servidor demorou demasiado tempo a responder. O pedido foi cancelado. </string>
+    <string name="error_url_not_found">Não conseguimos encontrar o URL. Por favor, verifique-o.</string>
+    <string name="error_account_disabled">A sua conta de utilizador foi desativada. Se for um erro, contacte o administrador.</string>
+    <string name="error_account_locked">A sua conta de utilizador está bloqueada. Se for um erro, contacte o administrador.</string>
+    <string name="error_set_value">O valor não pôde ser definido.</string>
+    <string name="error_ssl">Existe um problema com os certificados do servidor. Por favor, contacte o administrador.</string>
+    <string name="login_error_null_pass">A palavra-passe está em falta. Por favor, preencha este campo.</string>
+    <string name="login_error_null_username">O nome de utilizador está em falta. Por favor, preencha este campo.</string>
+    <string name="invalid_username">Nome de utilizador inválido</string>
+    <string name="invalid_password">A palavra-passe deve ter mais de 5 caracteres</string>
+    <string name="error_wrong_server_url">URL do servidor incorreto</string>
+    <string name="server_url">URL do servidor</string>
+    <string name="username">Nome de utilizador</string>
+    <string name="password">Palavra-passe</string>
+    <string name="login">Iniciar sessão</string>
+    <string name="url">https://</string>
+
+    <string name="success_data_sync">Dados sincronizados com sucesso</string>
+    <string name="error_data_sync">Ocorreu um erro durante a sincronização</string>
+    <string name="sync">Sincronizar</string>
+    <string name="logout">Terminar sessão</string>
+
+    <string name="nav_back">Navigate Back</string>
+    <string name="prescriptions_saved">Prescrições guardadas com sucesso</string>
+    <string name="sync_metadata">Sincronizar metadados</string>
+</resources>

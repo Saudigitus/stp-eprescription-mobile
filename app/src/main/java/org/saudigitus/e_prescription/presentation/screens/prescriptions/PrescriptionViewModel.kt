@@ -3,6 +3,8 @@ package org.saudigitus.e_prescription.presentation.screens.prescriptions
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -10,17 +12,21 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.saudigitus.e_prescription.R
+import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.BottomSheetState
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
+import org.saudigitus.e_prescription.utils.UIDMapping
 import org.saudigitus.e_prescription.utils.toPrescriptionError
 import javax.inject.Inject
 
 @HiltViewModel
 class PrescriptionViewModel
-@Inject constructor() : ViewModel() {
+@Inject constructor(
+    private val repository: PrescriptionRepository
+) : ViewModel() {
     private val viewModelState = MutableStateFlow(
-        PrescriptionUiState(prescriptions = cardState),
+        PrescriptionUiState(),
     )
 
     val uiState = viewModelState
@@ -33,6 +39,24 @@ class PrescriptionViewModel
 
     private val _cacheGivenMedicines = MutableStateFlow<List<InputFieldModel>>(emptyList())
     val cacheGivenMedicines: StateFlow<List<InputFieldModel>> = _cacheGivenMedicines
+
+
+    fun loadPrescriptions(tei: String) {
+        viewModelScope.launch {
+            val prescriptions = repository.getPrescriptions(
+                tei = tei,
+                program = UIDMapping.PROGRAM,
+                stage = UIDMapping.PROGRAM_STAGE
+            )
+
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    prescriptions = prescriptions
+                )
+            }
+        }
+    }
 
     fun onUiEvent(prescriptionUiEvent: PrescriptionUiEvent) {
         when (prescriptionUiEvent) {
@@ -48,6 +72,7 @@ class PrescriptionViewModel
                         index,
                         InputFieldModel(
                             key = prescriptionUiEvent.prescription.uid,
+                            dataElement = UIDMapping.DATA_ELEMENT_QTD_GIVEN,
                             value = prescriptionUiEvent.value,
                             conditionalValue = prescriptionUiEvent.prescription.requestedQtd.toString()
                         )
@@ -56,11 +81,14 @@ class PrescriptionViewModel
                     cache.add(
                         InputFieldModel(
                             key = prescriptionUiEvent.prescription.uid,
+                            dataElement = UIDMapping.DATA_ELEMENT_QTD_GIVEN,
                             value = prescriptionUiEvent.value,
                             conditionalValue = prescriptionUiEvent.prescription.requestedQtd.toString()
                         )
                     )
                 }
+
+                cache.removeIf { it.value.isEmpty() }
 
                 _cacheGivenMedicines.value = cache
             }
@@ -88,7 +116,20 @@ class PrescriptionViewModel
                 }
             }
             is PrescriptionUiEvent.OnSave -> {
+                viewModelScope.launch {
+                    cacheGivenMedicines.value.map {
+                        async {
+                            repository.savePrescription(
+                                event = it.key,
+                                dataElement = it.dataElement,
+                                value = it.value
+                            )
+                        }
+                    }.awaitAll()
 
+                    _cacheGivenMedicines.value = emptyList()
+                    viewModelState.update { it.copy(isSaved = true) }
+                }
             }
             is PrescriptionUiEvent.CloseErrorBottomSheet -> {
                 viewModelState.update {
@@ -131,20 +172,11 @@ class PrescriptionViewModel
     }
 
     private fun checkMedicines(): MedicineIndicators {
-        var completedCount = 0
-        var incompleteCount = 0
-        var zeroCount = 0
-
-        cacheGivenMedicines.value.forEach { (_, value, conditionalValue) ->
-            val givenAmount = value.toIntOrNull() ?: 0
-            val requiredAmount = conditionalValue?.toIntOrNull() ?: 0
-
-            when {
-                value.isEmpty() -> zeroCount++
-                givenAmount == requiredAmount -> completedCount++
-                givenAmount > requiredAmount -> incompleteCount++
-            }
+        val completedCount = cacheGivenMedicines.value.count { it.value == it.conditionalValue }
+        val incompleteCount = cacheGivenMedicines.value.count {
+            it.value.toInt() < (it.conditionalValue?.toInt() ?: 0)
         }
+        val zeroCount = viewModelState.value.prescriptions.size - cacheGivenMedicines.value.size
 
         return MedicineIndicators(
             Pair(R.string.completed_medicine, completedCount),

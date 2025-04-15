@@ -9,6 +9,7 @@ interface WorkManagerRepository {
     fun sync(workName: String, metadataTag: String, dataTag: String)
     fun sync(workItem: WorkItem)
     fun syncData(workName: String, dataTag: String)
+    fun syncMetaData(workName: String, dataTag: String)
 
     fun getWorkInfo(workName: String): LiveData<List<WorkInfo>>
     fun getWorkInfoByTag(tag: String): LiveData<List<WorkInfo>>
