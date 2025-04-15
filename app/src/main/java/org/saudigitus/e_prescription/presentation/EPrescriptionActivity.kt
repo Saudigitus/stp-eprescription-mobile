@@ -40,8 +40,10 @@ class EPrescriptionActivity : ComponentActivity() {
                     composable(
                         route = "${AppRoutes.PRESCRIPTION_SCREEN}/{uid}",
                         arguments = listOf(navArgument("uid") { type = NavType.StringType })
-                    ) {
-                        PrescriptionScreen(prescriptionViewModel)
+                    ) { entry ->
+                        val uid = entry.arguments?.getString("uid") ?: ""
+
+                        PrescriptionScreen(prescriptionViewModel, uid, navController::navigateUp)
                     }
                 }
             }

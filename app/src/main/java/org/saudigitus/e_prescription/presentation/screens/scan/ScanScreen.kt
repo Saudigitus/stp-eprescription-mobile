@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,9 +24,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.journeyapps.barcodescanner.ScanContract
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.presentation.AppRoutes
+import org.saudigitus.e_prescription.presentation.screens.scan.components.MoreVertMenu
 import org.saudigitus.e_prescription.utils.Utils
 
 @Composable
@@ -72,8 +71,6 @@ private fun ScanUI(
         onEvent(ScanUiEvent.Scan(result.contents))
     }
 
-    var ref by rememberSaveable { mutableStateOf("") }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -85,6 +82,18 @@ private fun ScanUI(
                         softWrap = true,
                         maxLines = 1,
                     )
+                },
+                actions = {
+                    IconButton(onClick = { onEvent(ScanUiEvent.SyncData) }) {
+                        Icon(
+                            imageVector = Icons.Default.Sync,
+                            contentDescription = stringResource(R.string.sync)
+                        )
+                    }
+
+                    MoreVertMenu {
+                        onEvent(it)
+                    }
                 }
             )
         }
@@ -111,14 +120,15 @@ private fun ScanUI(
                 Icon(
                     modifier = Modifier.size(125.dp),
                     imageVector = Icons.Default.QrCodeScanner,
-                    contentDescription = stringResource(R.string.scan_prescription)
+                    contentDescription = stringResource(R.string.scan_prescription),
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
             TextField(
-                value = state.scanResult.ifEmpty { ref },
-                onValueChange = { ref = it },
-
+                value = state.scanResult,
+                onValueChange = { },
+                readOnly = true,
                 textStyle = TextStyle(
                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                     textAlign = TextAlign.Center
@@ -129,7 +139,7 @@ private fun ScanUI(
 
             Button(
                 onClick = {
-                    val uid = state.scanResult.ifEmpty { ref }
+                    val uid = state.scanResult
                     onEvent(ScanUiEvent.NavTo("${AppRoutes.PRESCRIPTION_SCREEN}/$uid"))
                 },
                 shape = RoundedCornerShape(16.dp),

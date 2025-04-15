@@ -12,6 +12,7 @@ interface SyncManagerRepository {
     fun syncMetadata()
     fun syncData()
     fun syncDataWithTrigger()
+    fun syncMetaDataWithTrigger()
     fun syncEvents()
     fun upload(): Completable
     fun checkSyncStatus(): SyncResult

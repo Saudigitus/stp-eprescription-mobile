@@ -56,7 +56,11 @@ class SyncManagerRepositoryImpl
     }
 
     override fun syncDataWithTrigger() {
-        workManagerRepository.syncData(Constants.ROUTINE_SYNC, INSTANT_DATA_SYNC)
+        workManagerRepository.syncData(Constants.INITIAL_SYNC, INSTANT_DATA_SYNC)
+    }
+
+    override fun syncMetaDataWithTrigger() {
+        workManagerRepository.syncMetaData(Constants.INITIAL_SYNC, INSTANT_METADATA_SYNC)
     }
 
     override fun syncEvents() {

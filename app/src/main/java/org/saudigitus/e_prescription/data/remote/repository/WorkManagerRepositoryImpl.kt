@@ -56,6 +56,17 @@ class WorkManagerRepositoryImpl
             .enqueue()
     }
 
+    override fun syncMetaData(workName: String, metaDataTag: String) {
+        val syncDataBuilder = OneTimeWorkRequest.Builder(AppMetadataSyncWorker::class.java)
+        syncDataBuilder.addTag(metaDataTag)
+            .setConstraints(
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            )
+
+        workManager.beginUniqueWork(workName, ExistingWorkPolicy.KEEP, syncDataBuilder.build())
+            .enqueue()
+    }
+
     override fun getWorkInfo(workName: String): LiveData<List<WorkInfo>> {
         return workManager.getWorkInfosForUniqueWorkLiveData(workName)
     }

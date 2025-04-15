@@ -52,11 +52,17 @@ fun PrescriptionCard(
                         text = prescription.name,
                         overflow = TextOverflow.Ellipsis,
                         softWrap = true,
-                        maxLines = 1,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize
                     )
                     Text(
-                        text = "${prescription.requestedQtd}",
+                        text = stringResource(R.string.posology, prescription.posology),
+                        overflow = TextOverflow.Ellipsis,
+                        softWrap = true,
+                        maxLines = 1,
+                        fontSize = MaterialTheme.typography.titleSmall.fontSize
+                    )
+                    Text(
+                        text = stringResource(R.string.requested_qtd, prescription.requestedQtd),
                         overflow = TextOverflow.Ellipsis,
                         softWrap = true,
                         maxLines = 1,
@@ -76,7 +82,8 @@ fun PrescriptionCard(
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 textStyle = TextStyle(textAlign = TextAlign.Center),
-                isError = inputFieldModels.find { it.key == prescription.uid }?.hasError() ?: false
+                isError = inputFieldModels.find { it.key == prescription.uid }?.hasError() ?: false,
+                readOnly = prescription.isCompleted
             )
         }
     }

@@ -2,6 +2,7 @@ package org.saudigitus.e_prescription.presentation.screens.prescriptions.model
 
 data class InputFieldModel(
     val key: String,
+    val dataElement: String,
     val value: String,
     val conditionalValue: String? = null,
 ) {

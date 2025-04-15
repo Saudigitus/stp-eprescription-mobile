@@ -1,5 +1,7 @@
 package org.saudigitus.e_prescription.utils
 
+import org.hisp.dhis.android.core.D2
+import org.hisp.dhis.android.core.event.Event
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
 import org.saudigitus.e_prescription.data.model.Prescription
 import org.saudigitus.e_prescription.data.model.PrescriptionError
@@ -23,3 +25,14 @@ fun MedicineIndicators.toList() =
         this.incomplete,
         this.zero
     )
+
+fun D2.eventsWithTrackedDataValues(
+    tei: String,
+    program: String,
+    stage: String,
+): List<Event> = eventModule().events()
+    .byTrackedEntityInstanceUids(listOf(tei))
+    .byProgramUid().eq(program)
+    .byProgramStageUid().eq(stage)
+    .withTrackedEntityDataValues()
+    .blockingGet()

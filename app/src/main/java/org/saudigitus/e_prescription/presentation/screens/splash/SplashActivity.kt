@@ -30,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -39,6 +38,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import org.antlr.v4.runtime.misc.MurmurHash.finish
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.presentation.EPrescriptionActivity
 import org.saudigitus.e_prescription.presentation.screens.login.LoginActivity
@@ -72,7 +72,13 @@ class SplashActivity: ComponentActivity() {
                             } else {
                                 ContextCompat.checkSelfPermission(
                                     this, Manifest.permission.CAMERA
-                                ) == PackageManager.PERMISSION_GRANTED
+                                ) == PackageManager.PERMISSION_GRANTED &&
+                                    ContextCompat.checkSelfPermission(
+                                        this, Manifest.permission.READ_EXTERNAL_STORAGE
+                                    ) == PackageManager.PERMISSION_GRANTED &&
+                                    ContextCompat.checkSelfPermission(
+                                        this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    ) == PackageManager.PERMISSION_GRANTED
                             }
                         )
                     }
@@ -101,6 +107,8 @@ class SplashActivity: ComponentActivity() {
                                         permissionLauncher.launch(
                                             arrayOf(
                                                 Manifest.permission.CAMERA,
+                                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                             )
                                         )
                                     }
@@ -134,9 +142,7 @@ class SplashActivity: ComponentActivity() {
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.Bottom
                         ) {
-                            CircularProgressIndicator(
-                                color = Color.White
-                            )
+                            CircularProgressIndicator()
                         }
 
                     }
