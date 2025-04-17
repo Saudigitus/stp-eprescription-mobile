@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="scan_prescription">Digitalizar Prescrição</string>
-    <string name="prescriptions">Prescrições</string>
+    <string name="prescriptions">Receita Médica</string>
     <string name="save">Guardar</string>
     <string name="open_with">Abrir com</string>
     <string name="failed_save">Erro ao prescrever medicação (%s)</string>
