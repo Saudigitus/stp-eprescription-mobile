@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,8 +43,10 @@ import org.saudigitus.e_prescription.presentation.components.AppSnackbarHost
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.ErrorBottomSheet
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.PrescriptionCard
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.SaveBottomSheet
+import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.TeiCard
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
 import org.saudigitus.e_prescription.presentation.theme.darkSuccess
+import timber.log.Timber
 
 
 @Composable
@@ -102,6 +107,7 @@ private fun PrescriptionUI(
                     message = context.getString(R.string.prescriptions_saved)
                 )
             }
+
             onEvent(PrescriptionUiEvent.OnBack)
         }
     }
@@ -156,6 +162,23 @@ private fun PrescriptionUI(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!uiState.isLoading) {
+
+                uiState.prescTei?.let { tei ->
+                   TeiCard(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(vertical = 8.dp)
+                    ,patient = tei)
+                } ?: run {
+                    Text("Loading...")
+                }
+                Text(
+                    text = stringResource(R.string.prescription_list),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+                    )
+                )
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Top,

@@ -17,6 +17,13 @@
     <string name="login_info">Introduza as suas credenciais de acesso para continuar.</string>
     <string name="posology">Posologia %s</string>
     <string name="requested_qtd">Qtd. Solicitada: %s</string>
+    <string name="patient_name">Nome</string>
+    <string name="gender">Sexo</string>
+    <string name="address">Residência</string>
+    <string name="birthdate">Data de nascimento</string>
+    <string name="process_number">Nº do processo</string>
+    <string name="prescription_list">Lista de prescrições</string>
+
 
     <string name="logout_success_message">Sessão terminada com sucesso</string>
 

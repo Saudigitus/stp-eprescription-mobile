@@ -1,5 +1,6 @@
 package org.saudigitus.e_prescription.presentation.screens.prescriptions
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
@@ -40,8 +42,21 @@ class PrescriptionViewModel
     private val _cacheGivenMedicines = MutableStateFlow<List<InputFieldModel>>(emptyList())
     val cacheGivenMedicines: StateFlow<List<InputFieldModel>> = _cacheGivenMedicines
 
+    fun getTeiData(uid: String) {
+        viewModelScope.launch {
+            val patient = repository.getPrescriptionPatient(uid, UIDMapping.PROGRAM_PU)
+
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    prescTei = patient
+                )
+            }
+        }
+    }
 
     fun loadPrescriptions(tei: String) {
+        getTeiData(tei)
         viewModelScope.launch {
             val prescriptions = repository.getPrescriptions(
                 tei = tei,
