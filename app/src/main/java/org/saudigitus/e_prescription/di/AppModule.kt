@@ -20,6 +20,7 @@ import org.saudigitus.e_prescription.data.remote.WorkManagerRepository
 import org.saudigitus.e_prescription.data.remote.repository.SyncManagerRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.repository.WorkManagerRepositoryImpl
+import org.saudigitus.e_prescription.utils.AttributesHalper
 import org.saudigitus.e_prescription.utils.NetworkUtils
 import org.saudigitus.e_prescription.utils.ResourceManager
 import javax.inject.Singleton
@@ -73,5 +74,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePrescriptionRepository(d2: D2, @ApplicationContext context: Context): PrescriptionRepository = PrescriptionRepositoryImpl(d2, providesNetworkUtils(context = context))
+    fun providesAttributesHelper(): AttributesHalper = AttributesHalper()
+
+    @Provides
+    @Singleton
+    fun providePrescriptionRepository(d2: D2, @ApplicationContext context: Context): PrescriptionRepository = PrescriptionRepositoryImpl(d2, providesNetworkUtils(context = context), attributesHapler = providesAttributesHelper())
 }

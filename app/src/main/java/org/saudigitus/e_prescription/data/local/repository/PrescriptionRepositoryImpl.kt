@@ -8,7 +8,9 @@ import org.hisp.dhis.android.core.event.EventStatus
 import org.hisp.dhis.android.core.relationship.Relationship
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.saudigitus.e_prescription.data.local.PrescriptionRepository
+import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
+import org.saudigitus.e_prescription.utils.AttributesHalper
 import org.saudigitus.e_prescription.utils.NetworkUtils
 import org.saudigitus.e_prescription.utils.UIDMapping
 import org.saudigitus.e_prescription.utils.eventsWithTrackedDataValues
@@ -16,7 +18,8 @@ import org.saudigitus.e_prescription.utils.eventsWithTrackedDataValues
 
 class PrescriptionRepositoryImpl(
     private val d2: D2,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils,
+    private val attributesHapler: AttributesHalper
 ): PrescriptionRepository {
     override suspend fun savePrescription(
         event: String,
@@ -57,34 +60,10 @@ class PrescriptionRepositoryImpl(
             }
     }
 
-    override suspend fun getTei(
-        uid: String,
-        program: String
-    ): TrackedEntityInstance?  = withContext(Dispatchers.IO) {
-        // Log.d("PRESC_VM_GET_TEI_M", "IN GET TEI")
-
-        //getPatients(uid,program)
-        val repository = d2.trackedEntityModule().trackedEntityInstanceQuery()
-
-        return@withContext (if (networkUtils.isOnline()) {
-            repository.offlineFirst().allowOnlineCache().eq(true)
-                .byProgram().eq(program)
-                .byTrackedEntities().eq(uid)
-                .one()
-                .blockingGet()
-        } else {
-            repository.offlineOnly().allowOnlineCache().eq(false)
-                .byProgram().eq(program)
-                .byTrackedEntities().eq(uid)
-                .one()
-                .blockingGet()
-        })
-    }
-
     override suspend fun getPrescriptionPatient(
         uid: String,
         program: String
-    ):TrackedEntityInstance? = withContext(Dispatchers.IO) {
+    ):Patient? = withContext(Dispatchers.IO) {
         val repository = d2.trackedEntityModule().trackedEntityInstanceQuery()
         val relationships = d2.relationshipModule().relationships()
             .byRelationshipType().eq(UIDMapping.RELATIONSHIP_TYPE_UID)
@@ -96,18 +75,6 @@ class PrescriptionRepositoryImpl(
         }.mapNotNull {
             it.from()?.trackedEntityInstance()?.trackedEntityInstance()
         }
-
-        Log.d("RELATIONSHIPS_TEIS","${trackedEntityInstancesUIds.first()}")
-
-//        val result = d2.trackedEntityModule().trackedEntityInstanceQuery()
-//            .allowOnlineCache().eq(false).offlineOnly()
-//            .byOrgUnits().eq(UIDMapping.OU_UID)
-//            .byProgram().eq(program)
-//            .uid(trackedEntityInstancesUIds.first())
-//            //.byTrackedEntities().eq(trackedEntityInstancesUIds.first())
-//            .one()
-//            .blockingGet()
-
         val result = d2.trackedEntityModule()
             .trackedEntityInstances()
             .withTrackedEntityAttributeValues()
@@ -115,42 +82,17 @@ class PrescriptionRepositoryImpl(
             .one()
             .blockingGet()
 
-        Log.d("RELATIONSHIPS_PARENT_TEI","$result")
-//            .flatMap { tei ->
-//                listOf(tei)
-//            }.map { tei ->
-//                transform(tei, program)
-//            }.map {
-//                val total = d2.eventModule().events()
-//                    .byTrackedEntityInstanceUids(listOf(it.tei.uid()))
-//                    .byStatus().eq(EventStatus.ACTIVE)
-//                    .blockingCount()
-//
-//                Patient(
-//                    uid = it.tei.uid(),
-//                    name = getTeiAttrValue(it, 0),
-//                    birthDate = getTeiAttrValue(it, 1),
-//                    sex = getTeiAttrValue(it, 2),
-//                    personInChargeName = getTeiAttrValue(it, 3),
-//                    relationship = getTeiAttrValue(it, 4),
-//                    phone = getTeiAttrValue(it, 5),
-//                    scheduledAppointments = total
-//                )
-//            }
-        return@withContext result
+        val teiUid = trackedEntityInstancesUIds.first()
 
-//        return@withContext (if (networkUtils.isOnline()) {
-//            repository.offlineFirst().allowOnlineCache().eq(true)
-//                .byProgram().eq(program)
-//                .byTrackedEntities().eq(uid)
-//                .one()
-//                .blockingGet()
-//        } else {
-//            repository.offlineOnly().allowOnlineCache().eq(false)
-//                .byProgram().eq(program)
-//                .byTrackedEntities().eq(uid)
-//                .one()
-//                .blockingGet()
-//        })
+        val patient = Patient(
+            uid = teiUid,
+            name = attributesHapler.getAttributeValueByCode(tei = result,"Jrd6W0L8LQY").toString(),          // Replace with actual attribute code for name
+            surname = attributesHapler.getAttributeValueByCode(tei = result,"KmR2FYgDUmr").toString(),       // Replace with actual code for surname
+            residence = attributesHapler.getAttributeValueByCode(tei = result,"HKjREW796JR").toString(),     // Code for residence
+            gender = attributesHapler.getAttributeValueByCode(tei = result,"CklPZdOd6H1").toString(),        // Code for gender
+            processNumber = attributesHapler.getAttributeValueByCode(tei = result,"um3rU8yasxl") .toString(),// Code for process number
+            birthdate = attributesHapler.getAttributeValueByCode(tei = result,"S5YtVz5P3QE") .toString(),    // Code for birthdate
+        )
+        return@withContext patient
     }
 }

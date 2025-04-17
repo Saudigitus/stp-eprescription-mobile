@@ -17,6 +17,14 @@
     <string name="login_info">Enter your access credentials to continue.</string>
     <string name="posology">Posology %s</string>
     <string name="requested_qtd">Requested Qtd.: %s</string>
+    <string name="patient_name">Name</string>
+    <string name="gender">Sex</string>
+    <string name="address">Residence</string>
+    <string name="birthdate">Date of birth</string>
+    <string name="process_number">Process number</string>
+    <string name="prescription_list">Prescription list</string>
+
+
 
     <!-- Time -->
     <string name="period">Period</string>

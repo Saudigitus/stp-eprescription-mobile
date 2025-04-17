@@ -41,22 +41,15 @@ class PrescriptionViewModel
 
     private val _cacheGivenMedicines = MutableStateFlow<List<InputFieldModel>>(emptyList())
     val cacheGivenMedicines: StateFlow<List<InputFieldModel>> = _cacheGivenMedicines
-    fun getAttributeValueByCode(tei: TrackedEntityInstance?, code: String): String? {
-        return tei?.trackedEntityAttributeValues()
-            ?.find { it.trackedEntityAttribute() == code }
-            ?.value()
-    }
-    fun getTeiData(uid: String) {
-        Log.d("PRESC_VM","TEI_ID: $uid")
-        viewModelScope.launch {
-            val tei = repository.getPrescriptionPatient(uid, UIDMapping.PROGRAM_PU)
 
-            val value = getAttributeValueByCode(tei, "KmR2FYgDUmr")
-            Log.d("TEI_RES_IS:"," VALUE_IS $value")
+    fun getTeiData(uid: String) {
+        viewModelScope.launch {
+            val patient = repository.getPrescriptionPatient(uid, UIDMapping.PROGRAM_PU)
+
             viewModelState.update {
                 it.copy(
                     isLoading = false,
-                    prescTei = tei
+                    prescTei = patient
                 )
             }
         }
