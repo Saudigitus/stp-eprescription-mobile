@@ -8,9 +8,10 @@ import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.model.Prescription
 import org.saudigitus.e_prescription.utils.UIDMapping
 import org.saudigitus.e_prescription.utils.eventsWithTrackedDataValues
+import javax.inject.Inject
 
-class PrescriptionRepositoryImpl(
-    private val d2: D2
+class PrescriptionRepositoryImpl @Inject constructor(
+    private val d2: D2,
 ): PrescriptionRepository {
     override suspend fun savePrescription(
         event: String,
@@ -21,7 +22,7 @@ class PrescriptionRepositoryImpl(
             .value(event, dataElement)
             .blockingSet(value)
 
-        val repository = d2.eventModule().events().uid(event)
+        d2.eventModule().events().uid(event)
 
         d2.eventModule().events().blockingUpload()
     }
@@ -31,6 +32,12 @@ class PrescriptionRepositoryImpl(
         program: String,
         stage: String,
     ) = withContext(Dispatchers.IO) {
+
+        d2.trackedEntityModule().trackedEntityInstanceDownloader()
+            .byUid().`in`(tei)
+            .byProgramUid(program)
+            .blockingDownload()
+
         d2.eventsWithTrackedDataValues(tei, program, stage)
             .map { event ->
                 val name = event.trackedEntityDataValues()?.first { it.dataElement() == UIDMapping.DATA_ELEMENT_NAME }?.value()
