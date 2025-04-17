@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,8 +41,10 @@ import org.saudigitus.e_prescription.presentation.components.AppSnackbarHost
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.ErrorBottomSheet
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.PrescriptionCard
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.SaveBottomSheet
+import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.TeiCard
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
 import org.saudigitus.e_prescription.presentation.theme.darkSuccess
+import timber.log.Timber
 
 
 @Composable
@@ -102,6 +105,7 @@ private fun PrescriptionUI(
                     message = context.getString(R.string.prescriptions_saved)
                 )
             }
+
             onEvent(PrescriptionUiEvent.OnBack)
         }
     }
@@ -156,6 +160,18 @@ private fun PrescriptionUI(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!uiState.isLoading) {
+
+                uiState.prescTei?.let { tei ->
+                   TeiCard(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(vertical = 8.dp)
+                    ,tei = tei)
+                } ?: run {
+                    Text("Loading...")
+                }
+
+
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Top,

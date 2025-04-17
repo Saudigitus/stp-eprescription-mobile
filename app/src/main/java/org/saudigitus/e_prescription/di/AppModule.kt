@@ -69,9 +69,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesNetworkUtils(@ApplicationContext context: Context) = NetworkUtils(context)
+    fun providesNetworkUtils(@ApplicationContext context: Context): NetworkUtils = NetworkUtils(context)
 
     @Provides
     @Singleton
-    fun providePrescriptionRepository(d2: D2): PrescriptionRepository = PrescriptionRepositoryImpl(d2)
+    fun providePrescriptionRepository(d2: D2, @ApplicationContext context: Context): PrescriptionRepository = PrescriptionRepositoryImpl(d2, providesNetworkUtils(context = context))
 }

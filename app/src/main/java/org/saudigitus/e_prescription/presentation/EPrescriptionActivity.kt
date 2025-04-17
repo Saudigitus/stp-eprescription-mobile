@@ -27,7 +27,9 @@ class EPrescriptionActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EPrescriptionTheme {
+            EPrescriptionTheme (
+                darkTheme = false
+            ){
                 val navController = rememberNavController()
 
                 NavHost(

@@ -1,5 +1,6 @@
 package org.saudigitus.e_prescription.presentation.screens.prescriptions
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
@@ -39,9 +41,29 @@ class PrescriptionViewModel
 
     private val _cacheGivenMedicines = MutableStateFlow<List<InputFieldModel>>(emptyList())
     val cacheGivenMedicines: StateFlow<List<InputFieldModel>> = _cacheGivenMedicines
+    fun getAttributeValueByCode(tei: TrackedEntityInstance?, code: String): String? {
+        return tei?.trackedEntityAttributeValues()
+            ?.find { it.trackedEntityAttribute() == code }
+            ?.value()
+    }
+    fun getTeiData(uid: String) {
+        Log.d("PRESC_VM","TEI_ID: $uid")
+        viewModelScope.launch {
+            val tei = repository.getPrescriptionPatient(uid, UIDMapping.PROGRAM_PU)
 
+            val value = getAttributeValueByCode(tei, "KmR2FYgDUmr")
+            Log.d("TEI_RES_IS:"," VALUE_IS $value")
+            viewModelState.update {
+                it.copy(
+                    isLoading = false,
+                    prescTei = tei
+                )
+            }
+        }
+    }
 
     fun loadPrescriptions(tei: String) {
+        getTeiData(tei)
         viewModelScope.launch {
             val prescriptions = repository.getPrescriptions(
                 tei = tei,
