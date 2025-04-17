@@ -221,6 +221,10 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF43474D)
 
 
 
+val lightSuccess = Color(0xFF4CAF50) // Green
+val lightWarning = Color(0xFFFF9800)
 
+val darkSuccess = Color(0xFF81C784) // Lighter green for dark mode
+val darkWarning = Color(0xFFFFB74D)
 
 
