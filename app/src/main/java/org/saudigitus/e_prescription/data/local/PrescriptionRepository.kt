@@ -1,9 +1,7 @@
 package org.saudigitus.e_prescription.data.local
 
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
-import java.io.Serializable
 
 interface PrescriptionRepository {
     suspend fun savePrescription(

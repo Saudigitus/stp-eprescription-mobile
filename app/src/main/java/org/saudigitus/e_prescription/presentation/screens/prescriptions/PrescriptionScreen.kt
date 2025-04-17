@@ -46,7 +46,6 @@ import org.saudigitus.e_prescription.presentation.screens.prescriptions.componen
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.components.TeiCard
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
 import org.saudigitus.e_prescription.presentation.theme.darkSuccess
-import timber.log.Timber
 
 
 @Composable
