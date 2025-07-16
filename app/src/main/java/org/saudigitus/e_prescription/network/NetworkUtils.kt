@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.utils
+package org.saudigitus.e_prescription.network
 
 import android.content.Context
 import android.net.ConnectivityManager

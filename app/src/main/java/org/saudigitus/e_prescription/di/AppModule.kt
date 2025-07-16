@@ -20,8 +20,8 @@ import org.saudigitus.e_prescription.data.remote.WorkManagerRepository
 import org.saudigitus.e_prescription.data.remote.repository.SyncManagerRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.repository.WorkManagerRepositoryImpl
+import org.saudigitus.e_prescription.network.NetworkUtils
 import org.saudigitus.e_prescription.utils.AttributesHelper
-import org.saudigitus.e_prescription.utils.NetworkUtils
 import org.saudigitus.e_prescription.utils.ResourceManager
 import javax.inject.Singleton
 

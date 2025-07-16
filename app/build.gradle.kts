@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -72,6 +74,12 @@ dependencies {
     implementation(libs.lottie.compose)
     implementation(libs.androidx.hilt.work)
     implementation(libs.hilt.navigation)
+    implementation(libs.jackson.module)
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.jackson)
+    implementation(libs.ktor.auth)
 
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.hilt.compiler)
