@@ -3,12 +3,19 @@ package org.saudigitus.e_prescription.data.remote.repository.impl
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
+import org.saudigitus.e_prescription.data.model.response.TrackedEntityInstanceResponse
 import org.saudigitus.e_prescription.data.remote.repository.PrescriptionRepository
 import org.saudigitus.e_prescription.network.BaseNetwork
 import org.saudigitus.e_prescription.network.NetworkUtils
+import org.saudigitus.e_prescription.network.URLMapping.teiAttributesUrl
+import org.saudigitus.e_prescription.network.URLMapping.teiRelationshipUrl
+import org.saudigitus.e_prescription.utils.UIDMapping
+import org.saudigitus.e_prescription.utils.UIDMapping.attributes
+import org.saudigitus.e_prescription.utils.getByAttr
 
 class PrescriptionRepositoryImpl(
     override val httpClient: HttpClient,
@@ -33,8 +40,35 @@ class PrescriptionRepositoryImpl(
 
     override suspend fun getPatient(
         uid: String,
-        program: String
-    ) : Patient? = withContext(ioDispatcher) {
-        null
+        program: String,
+        relationshipType: String
+    ): Patient? = withContext(ioDispatcher) {
+        val relationship = async {
+            get<TrackedEntityInstanceResponse>(teiRelationshipUrl(uid, UIDMapping.PROGRAM))
+                .getOrNull()
+                ?.trackedEntityInstances
+                ?.flatMap { it.relationships }
+                ?.find { it.relationshipType == relationshipType }
+        }.await()
+
+        val relatedTei = relationship?.from?.trackedEntityInstance?.trackedEntityInstance.orEmpty()
+        if (relatedTei.isEmpty()) return@withContext null
+
+        val response = get<TrackedEntityInstanceResponse>(teiAttributesUrl(relatedTei, program))
+        val teiData = response.getOrNull() ?: return@withContext null
+
+        val attributes = teiData.trackedEntityInstances
+            .flatMap { it.attributes }
+            .filter { it.attribute in attributes() }
+
+        return@withContext Patient(
+            uid = uid,
+            name = attributes.getByAttr(UIDMapping.NAME_ATTR),
+            surname = attributes.getByAttr(UIDMapping.SURNAME_ATTR),
+            birthdate = attributes.getByAttr(UIDMapping.BIRTHDATE_ATTR),
+            residence = attributes.getByAttr(UIDMapping.RESIDENCE_ATTR),
+            gender = attributes.getByAttr(UIDMapping.GENDER_ATTR),
+            processNumber = attributes.getByAttr(UIDMapping.PROCESS_NUMBER_ATTR),
+        )
     }
 }

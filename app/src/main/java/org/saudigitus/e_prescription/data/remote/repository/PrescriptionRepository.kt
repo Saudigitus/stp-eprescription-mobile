@@ -14,5 +14,5 @@ interface PrescriptionRepository {
         program: String,
         stage: String,
     ): List<Prescription>
-    suspend fun getPatient(uid: String, program: String): Patient?
+    suspend fun getPatient(uid: String, program: String, relationshipType: String): Patient?
 }

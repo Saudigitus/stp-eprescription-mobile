@@ -43,7 +43,7 @@ class PrescriptionViewModel
     fun loadData(tei: String) {
         viewModelScope.launch {
             val patientDeferred = async {
-                repository.getPatient(tei, UIDMapping.PROGRAM_PU)
+                repository.getPatient(tei, UIDMapping.PROGRAM_PU, UIDMapping.RELATIONSHIP_TYPE_UID)
             }
 
             val prescriptionsDeferred = async {
