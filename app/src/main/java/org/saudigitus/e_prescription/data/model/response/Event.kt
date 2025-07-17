@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Event(
     @JsonProperty("dataValues")
-    val dataValues: List<DataValue>,
+    val dataValues: List<DataValue> = emptyList(),
     @JsonProperty("event")
-    val event: String,
+    val event: String = "",
     @JsonProperty("programStage")
-    val programStage: String,
+    val programStage: String = "",
     @JsonProperty("status")
-    val status: String
+    val status: String = ""
 )

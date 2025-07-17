@@ -7,5 +7,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TrackedEntityInstanceResponse(
     @JsonProperty("trackedEntityInstances")
-    val trackedEntityInstances: List<TrackedEntityInstance>
+    val trackedEntityInstances: List<TrackedEntityInstance> = emptyList()
 )

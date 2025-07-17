@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Enrollment(
     @JsonProperty("enrollment")
-    val enrollment: String,
+    val enrollment: String = "",
     @JsonProperty("events")
-    val events: List<Event>
+    val events: List<Event> = emptyList()
 )

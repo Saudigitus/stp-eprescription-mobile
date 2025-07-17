@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Attribute(
     @JsonProperty("attribute")
-    val attribute: String,
+    val attribute: String = "",
     @JsonProperty("displayName")
-    val displayName: String,
+    val displayName: String = "",
     @JsonProperty("value")
-    val value: String
+    val value: String = ""
 )
