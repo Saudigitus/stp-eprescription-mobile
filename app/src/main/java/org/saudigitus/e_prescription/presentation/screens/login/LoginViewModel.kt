@@ -11,21 +11,17 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.data.Result
-import org.saudigitus.e_prescription.data.remote.UserManagerRepository
-import org.saudigitus.e_prescription.utils.ResourceManager
+import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
 @Inject constructor(
     private val userManager: UserManagerRepository,
-    resourceManager: ResourceManager
 ): ViewModel() {
 
-    private val _loginUiState = MutableStateFlow(LoginUiState(serverUrl = resourceManager.getString(
-        R.string.url)))
+    private val _loginUiState = MutableStateFlow(LoginUiState(serverUrl = "https://"))
     val loginUiState = _loginUiState.asStateFlow()
 
     private val _loginResult = MutableSharedFlow<LoginResult>()
@@ -73,14 +69,14 @@ class LoginViewModel
                 )
             }
 
-            when (val user = result.await()) {
+            when (val isSuccess = result.await()) {
                 is Result.Success -> {
-                    _loginResult.emit(LoginResult(success = user.data))
+                    _loginResult.emit(LoginResult(success = isSuccess.data))
 
                 }
                 is Result.Error -> {
                     progressLoading(false)
-                    _loginResult.emit(LoginResult(error = user.exception.message))
+                    _loginResult.emit(LoginResult(error = isSuccess.exception.message))
                 }
             }
         }

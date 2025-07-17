@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.saudigitus.e_prescription.R
-import org.saudigitus.e_prescription.data.local.PrescriptionRepository
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
+import org.saudigitus.e_prescription.data.remote.repository.PrescriptionRepository
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.BottomSheetState
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
 import org.saudigitus.e_prescription.utils.UIDMapping

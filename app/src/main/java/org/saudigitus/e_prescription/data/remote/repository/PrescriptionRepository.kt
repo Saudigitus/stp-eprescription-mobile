@@ -1,4 +1,4 @@
-package org.saudigitus.e_prescription.data.local
+package org.saudigitus.e_prescription.data.remote.repository
 
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription

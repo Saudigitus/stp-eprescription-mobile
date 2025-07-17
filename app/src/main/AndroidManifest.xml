@@ -37,9 +37,6 @@
             android:name=".presentation.EPrescriptionActivity"
             android:theme="@style/Theme.Eprescription" />
 
-        <activity
-            android:name=".presentation.screens.sync.SyncActivity"
-            android:theme="@style/Theme.Eprescription" />
 
         <activity
             android:name=".presentation.screens.login.LoginActivity"
@@ -48,37 +45,14 @@
         <activity
             android:name=".presentation.screens.splash.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Eprescription">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.PREFERENCE" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="play.dhis2.org"
-                    android:scheme="https" />
-            </intent-filter>
         </activity>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
     </application>
 
 </manifest>

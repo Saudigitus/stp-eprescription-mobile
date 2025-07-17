@@ -1,22 +1,22 @@
 package org.saudigitus.e_prescription.network
 
-import android.content.SharedPreferences
+import org.saudigitus.e_prescription.data.local.PreferenceProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CredentialProviderImpl @Inject constructor(
-    private val sharedPrefs: SharedPreferences
+    private val preferenceProvider: PreferenceProvider
 ) : CredentialProvider {
     override fun getUrl(): String {
-        return sharedPrefs.getString("URL", URLMapping.BASE_URL).orEmpty()
+        return preferenceProvider.getString("URL", URLMapping.BASE_URL).orEmpty()
     }
 
     override fun getUsername(): String {
-        return sharedPrefs.getString("USERNAME", "").orEmpty()
+        return preferenceProvider.getString("USERNAME", "").orEmpty()
     }
 
     override fun getPassword(): String {
-        return sharedPrefs.getString("PASSWORD", "").orEmpty()
+        return preferenceProvider.getString("PASSWORD", "").orEmpty()
     }
 }

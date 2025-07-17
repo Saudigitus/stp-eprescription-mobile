@@ -1,7 +1,6 @@
 package org.saudigitus.e_prescription.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +19,7 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.jackson.jackson
+import org.saudigitus.e_prescription.data.local.PreferenceProvider
 import org.saudigitus.e_prescription.network.CredentialProvider
 import org.saudigitus.e_prescription.network.CredentialProviderImpl
 import org.saudigitus.e_prescription.network.NetworkUtils
@@ -28,15 +28,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-    }
 
     @Provides
     @Singleton
-    fun provideCredentialProvider(impl: CredentialProviderImpl): CredentialProvider = impl
+    fun provideCredentialProvider(
+        preferenceProvider: PreferenceProvider
+    ): CredentialProvider = CredentialProviderImpl(preferenceProvider)
 
     @Provides
     @Singleton

@@ -55,13 +55,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.dhis2.android.sdk) {
-        exclude("org.hisp.dhis", "core-rules")
-        exclude("com.facebook.flipper")
-        exclude("com.facebook.soloader")
-        this.isChanging = true
-    }
-    implementation(libs.dhis2.mobile.designsystem)
     implementation(libs.barcodeScanner.zxing.android)
     implementation(libs.hilt.android)
     implementation(libs.timber)
@@ -80,6 +73,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.jackson)
     implementation(libs.ktor.auth)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended.android)
 
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.hilt.compiler)

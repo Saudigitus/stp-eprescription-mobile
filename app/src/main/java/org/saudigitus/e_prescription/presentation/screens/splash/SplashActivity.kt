@@ -38,7 +38,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import org.antlr.v4.runtime.misc.MurmurHash.finish
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.presentation.EPrescriptionActivity
 import org.saudigitus.e_prescription.presentation.screens.login.LoginActivity

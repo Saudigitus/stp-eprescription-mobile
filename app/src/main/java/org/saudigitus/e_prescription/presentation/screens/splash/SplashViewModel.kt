@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.saudigitus.e_prescription.data.next
-import org.saudigitus.e_prescription.data.remote.UserManagerRepository
+import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepository
 import javax.inject.Inject
 
 @HiltViewModel

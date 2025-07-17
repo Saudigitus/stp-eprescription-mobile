@@ -290,12 +290,12 @@ fun LaunchLoginResult(
 ) {
     LaunchedEffect(Unit) {
         loginResult.collectLatest {
-            if (it.success != null) {
+            if (it.success) {
                 onNavigateToSync.invoke()
-            } else if (it.error != null) {
+            } else {
                 scope.launch {
                     snackbarHostState.showSnackbar(
-                        message = it.error
+                        message = it.error.orEmpty()
                     )
                 }
             }
