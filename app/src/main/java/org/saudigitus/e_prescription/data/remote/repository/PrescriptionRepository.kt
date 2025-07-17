@@ -5,10 +5,12 @@ import org.saudigitus.e_prescription.data.model.Prescription
 
 interface PrescriptionRepository {
     suspend fun savePrescription(
+        tei: String,
+        ou: String,
         event: String,
         dataElement: String,
         value: String,
-    )
+    ): Boolean
     suspend fun getPrescriptions(
         tei: String,
         program: String,

@@ -3,14 +3,6 @@ package org.saudigitus.e_prescription.network
 object URLMapping {
     const val BASE_URL = "https://dhis2.gov.st/tracker"
 
-    /**
-     * This retrieves small info of the program such as:
-     * id, name, programTrackedEntityAttributes, programStages
-     */
-    fun programDetails(program: String): String {
-        return "programs/${program}.json?fields=id,name,programTrackedEntityAttributes[trackedEntityAttribute[id,name,formName]],programStages[id,name,programStageDataElements[dataElement[id,name,formName]]]"
-    }
-
     fun teiRelationshipUrl(
         tei: String,
         program: String,
@@ -53,5 +45,12 @@ object URLMapping {
 
     fun optionsUrl(code: String): String {
         return "/tracker/api/options.json?fields=code,name,optionSet&filter=code:eq:${code}&filter=optionSet.id:eq:yPNaEEL1t7S&paging=false"
+    }
+
+    fun putEventUrl(
+        event: String,
+        dataElement: String,
+    ): String {
+        return "/tracker/api/events/${event}/${dataElement}"
     }
 }

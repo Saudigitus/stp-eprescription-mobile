@@ -7,12 +7,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
+import org.saudigitus.e_prescription.data.model.put.DataValue
+import org.saudigitus.e_prescription.data.model.put.UpdateEvent
 import org.saudigitus.e_prescription.data.model.response.OptionResponse
 import org.saudigitus.e_prescription.data.model.response.TrackedEntityInstanceResponse
 import org.saudigitus.e_prescription.data.remote.repository.PrescriptionRepository
 import org.saudigitus.e_prescription.network.BaseNetwork
 import org.saudigitus.e_prescription.network.NetworkUtils
 import org.saudigitus.e_prescription.network.URLMapping.optionsUrl
+import org.saudigitus.e_prescription.network.URLMapping.putEventUrl
 import org.saudigitus.e_prescription.network.URLMapping.teiAttributesUrl
 import org.saudigitus.e_prescription.network.URLMapping.teiEventsUrl
 import org.saudigitus.e_prescription.network.URLMapping.teiRelationshipUrl
@@ -26,11 +29,33 @@ class PrescriptionRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): BaseNetwork(httpClient, networkUtil), PrescriptionRepository {
     override suspend fun savePrescription(
+        tei: String,
+        ou: String,
         event: String,
         dataElement: String,
         value: String
     ) = withContext(ioDispatcher) {
-        //TODO: Implement logic to save prescription
+        val data = UpdateEvent(
+            event = event,
+            orgUnit = ou,
+            dataValues = listOf(
+                DataValue(
+                    dataElement = dataElement,
+                    value = value.toIntOrNull() ?: 0
+                )
+            ),
+            program = UIDMapping.PROGRAM,
+            programStage = UIDMapping.PROGRAM_STAGE,
+            status = "ACTIVE",
+            trackedEntityInstance = tei,
+        )
+
+        val response = put<Unit, UpdateEvent>(
+            putEventUrl(tei, dataElement),
+            data
+        ).getOrNull()
+
+        return@withContext response?.first == 200 || response?.first == 201
     }
 
     override suspend fun getPrescriptions(
@@ -46,10 +71,13 @@ class PrescriptionRepositoryImpl(
             ?.filter { it.programStage == stage }
             ?: return@withContext emptyList()
 
-        val eventDataMap = events.associateBy({ it.event }, { it.dataValues })
+        val eventDataMap = events.associateBy(
+            { Pair(it.event, it.orgUnit) },
+            { it.dataValues }
+        )
 
-        return@withContext eventDataMap.keys.map { eventId ->
-            val dataValues = eventDataMap[eventId] ?: emptyList()
+        return@withContext eventDataMap.keys.map { key ->
+            val dataValues = eventDataMap[Pair(key.first, key.second)] ?: emptyList()
 
             val optionCode = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_NAME }.value
             val posology = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_POSOLOGY }.value
@@ -63,7 +91,8 @@ class PrescriptionRepositoryImpl(
                 ?.name.orEmpty()
 
             Prescription(
-                uid = eventId,
+                uid = key.first,
+                ou = key.second,
                 name = name,
                 posology = posology,
                 requestedQtd = requestedQtd,

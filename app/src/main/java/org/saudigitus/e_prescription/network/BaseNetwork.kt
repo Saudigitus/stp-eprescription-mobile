@@ -52,10 +52,12 @@ abstract class BaseNetwork(
      * @param body is the request body
      * @return Result<T> is the response body
      */
-    suspend inline fun <reified T, reified E> put(route: String, body: E): Result<T> =
+    suspend inline fun <reified T, reified E> put(route: String, body: E): Result<Pair<Int, T>> =
         safeCall {
-            httpClient.put(route) {
+            val response = httpClient.put(route) {
                 setBody(body)
-            }.body()
+            }
+
+            Pair(response.status.value, response.body<T>())
         }
 }

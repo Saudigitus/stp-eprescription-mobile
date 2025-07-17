@@ -83,7 +83,7 @@ fun PrescriptionCard(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 textStyle = TextStyle(textAlign = TextAlign.Center),
                 isError = inputFieldModels.find { it.key == prescription.uid }?.hasError() ?: false,
-                readOnly = prescription.isCompleted
+
             )
         }
     }

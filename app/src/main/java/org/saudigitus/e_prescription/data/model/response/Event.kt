@@ -10,6 +10,8 @@ data class Event(
     val dataValues: List<DataValue> = emptyList(),
     @JsonProperty("event")
     val event: String = "",
+    @JsonProperty("orgUnit")
+    val orgUnit: String = "",
     @JsonProperty("programStage")
     val programStage: String = "",
     @JsonProperty("status")

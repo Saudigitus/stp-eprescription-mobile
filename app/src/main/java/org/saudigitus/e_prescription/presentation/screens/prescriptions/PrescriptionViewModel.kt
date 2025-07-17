@@ -36,11 +36,13 @@ class PrescriptionViewModel
             viewModelState.value,
         )
 
+    private lateinit var trackerEntity: String
 
     private val _cacheGivenMedicines = MutableStateFlow<List<InputFieldModel>>(emptyList())
     val cacheGivenMedicines: StateFlow<List<InputFieldModel>> = _cacheGivenMedicines
 
     fun loadData(tei: String) {
+        trackerEntity = tei
         viewModelScope.launch {
             val patientDeferred = async {
                 repository.getPatient(tei, UIDMapping.PROGRAM_PU, UIDMapping.RELATIONSHIP_TYPE_UID)
@@ -81,6 +83,7 @@ class PrescriptionViewModel
                         index,
                         InputFieldModel(
                             key = prescriptionUiEvent.prescription.uid,
+                            ou = prescriptionUiEvent.prescription.ou,
                             dataElement = UIDMapping.DATA_ELEMENT_QTD_GIVEN,
                             value = prescriptionUiEvent.value,
                             conditionalValue = prescriptionUiEvent.prescription.requestedQtd.toString()
@@ -90,6 +93,7 @@ class PrescriptionViewModel
                     cache.add(
                         InputFieldModel(
                             key = prescriptionUiEvent.prescription.uid,
+                            ou = prescriptionUiEvent.prescription.ou,
                             dataElement = UIDMapping.DATA_ELEMENT_QTD_GIVEN,
                             value = prescriptionUiEvent.value,
                             conditionalValue = prescriptionUiEvent.prescription.requestedQtd.toString()
@@ -130,8 +134,10 @@ class PrescriptionViewModel
                         async {
                             repository.savePrescription(
                                 event = it.key,
+                                ou = it.ou.orEmpty(),
                                 dataElement = it.dataElement,
-                                value = it.value
+                                value = it.value,
+                                tei = trackerEntity
                             )
                         }
                     }.awaitAll()
