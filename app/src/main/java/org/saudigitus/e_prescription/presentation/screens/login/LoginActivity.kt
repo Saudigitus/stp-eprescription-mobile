@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import org.saudigitus.e_prescription.presentation.screens.sync.SyncActivity
+import org.saudigitus.e_prescription.presentation.EPrescriptionActivity
 import org.saudigitus.e_prescription.presentation.theme.EPrescriptionTheme
 
 @AndroidEntryPoint
@@ -36,7 +36,7 @@ class LoginActivity : ComponentActivity() {
                             startActivity(
                                 Intent(
                                     this@LoginActivity,
-                                    SyncActivity::class.java
+                                    EPrescriptionActivity::class.java
                                 )
                             )
                             finish()

@@ -38,7 +38,7 @@ class UserManagerRepositoryImpl
     }
 
     override suspend fun isLoggedIn() = withContext(ioDispatcher) {
-        Result.Success(d2.userModule().blockingIsLogged())
+        Result.Success(true)
     }
 
     override suspend fun userName() = withContext(ioDispatcher) {

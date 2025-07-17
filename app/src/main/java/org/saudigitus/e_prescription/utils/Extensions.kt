@@ -5,6 +5,7 @@ import org.hisp.dhis.android.core.event.Event
 import org.saudigitus.e_prescription.data.model.MedicineIndicators
 import org.saudigitus.e_prescription.data.model.Prescription
 import org.saudigitus.e_prescription.data.model.PrescriptionError
+import org.saudigitus.e_prescription.data.model.response.Attribute
 
 
 fun Prescription.toPrescriptionError(givenQtd: Int) =
@@ -36,3 +37,9 @@ fun D2.eventsWithTrackedDataValues(
     .byProgramStageUid().eq(stage)
     .withTrackedEntityDataValues()
     .blockingGet()
+
+fun List<Attribute>.getByAttr(attr: String): Pair<String, String> {
+    val attr = find { it.attribute == attr }
+
+    return Pair(attr?.displayName.orEmpty(), attr?.value.orEmpty())
+}
