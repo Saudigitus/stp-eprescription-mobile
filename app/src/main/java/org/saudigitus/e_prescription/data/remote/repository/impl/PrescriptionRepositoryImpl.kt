@@ -7,11 +7,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
+import org.saudigitus.e_prescription.data.model.response.OptionResponse
 import org.saudigitus.e_prescription.data.model.response.TrackedEntityInstanceResponse
 import org.saudigitus.e_prescription.data.remote.repository.PrescriptionRepository
 import org.saudigitus.e_prescription.network.BaseNetwork
 import org.saudigitus.e_prescription.network.NetworkUtils
+import org.saudigitus.e_prescription.network.URLMapping.optionsUrl
 import org.saudigitus.e_prescription.network.URLMapping.teiAttributesUrl
+import org.saudigitus.e_prescription.network.URLMapping.teiEventsUrl
 import org.saudigitus.e_prescription.network.URLMapping.teiRelationshipUrl
 import org.saudigitus.e_prescription.utils.UIDMapping
 import org.saudigitus.e_prescription.utils.UIDMapping.attributes
@@ -34,8 +37,39 @@ class PrescriptionRepositoryImpl(
         tei: String,
         program: String,
         stage: String,
-    ) = withContext(ioDispatcher) {
-        emptyList<Prescription>()
+    ): List<Prescription> = withContext(ioDispatcher) {
+        val events = get<TrackedEntityInstanceResponse>(teiEventsUrl(tei, program))
+            .getOrNull()
+            ?.trackedEntityInstances
+            ?.flatMap { it.enrollments }
+            ?.flatMap { it.events }
+            ?.filter { it.programStage == stage }
+            ?: return@withContext emptyList()
+
+        val eventDataMap = events.associateBy({ it.event }, { it.dataValues })
+
+        return@withContext eventDataMap.keys.map { eventId ->
+            val dataValues = eventDataMap[eventId] ?: emptyList()
+
+            val optionCode = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_NAME }.value
+            val posology = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_POSOLOGY }.value
+            val requestedQtd = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_QTD_REQ }
+                .value.toIntOrNull() ?: 0
+
+            val name = get<OptionResponse>(optionsUrl(optionCode))
+                .getOrNull()
+                ?.options
+                ?.find { it.code == optionCode }
+                ?.name.orEmpty()
+
+            Prescription(
+                uid = eventId,
+                name = name,
+                posology = posology,
+                requestedQtd = requestedQtd,
+                isCompleted = true
+            )
+        }
     }
 
     override suspend fun getPatient(
