@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.jackson.module)
     implementation(libs.ktor.core)
-    implementation(libs.ktor.cio)
+    implementation(libs.ktor.okhttp)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.jackson)
     implementation(libs.ktor.auth)

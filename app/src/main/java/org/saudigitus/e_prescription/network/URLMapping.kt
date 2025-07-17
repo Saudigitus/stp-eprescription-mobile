@@ -11,6 +11,14 @@ object URLMapping {
         return "programs/${program}.json?fields=id,name,programTrackedEntityAttributes[trackedEntityAttribute[id,name,formName]],programStages[id,name,programStageDataElements[dataElement[id,name,formName]]]"
     }
 
+    fun teiRelationshipUrl(
+        tei: String,
+        program: String,
+        ouMode: String = "ACCESSIBLE"
+    ): String {
+        return "/tracker/api/trackedEntityInstances.json?fields=relationships[relationshipType,from,to]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
+    }
+
     /**
      * This retrieves Tracked Entity Instances attributes
      * @param tei The Tracked Entity Instance ID
@@ -22,7 +30,7 @@ object URLMapping {
         program: String,
         ouMode: String = "ACCESSIBLE"
     ): String {
-        return "trackedEntityInstances.json?fields=trackedEntityInstance,attributes[attribute,displayName,value]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
+        return "/tracker/api/trackedEntityInstances.json?fields=trackedEntityInstance,attributes[attribute,displayName,value]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
     }
 
     /**

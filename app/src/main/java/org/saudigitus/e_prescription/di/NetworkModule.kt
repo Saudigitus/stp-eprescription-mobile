@@ -7,22 +7,21 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
-import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.jackson.jackson
+import okhttp3.OkHttpClient
 import org.saudigitus.e_prescription.data.local.PreferenceProvider
 import org.saudigitus.e_prescription.network.CredentialProvider
 import org.saudigitus.e_prescription.network.CredentialProviderImpl
 import org.saudigitus.e_prescription.network.NetworkUtils
+import org.saudigitus.e_prescription.network.basicAuthInterceptor
 import javax.inject.Singleton
 
 @Module
@@ -40,7 +39,7 @@ object NetworkModule {
     fun providesHttpClient(
         credentialProvider: CredentialProvider
     ): HttpClient {
-        return HttpClient(CIO){
+        return HttpClient(OkHttp){
             install(DefaultRequest){
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
@@ -51,23 +50,14 @@ object NetworkModule {
                 retryOnException(5, true)
                 exponentialDelay()
             }
-            install(Auth) {
-                basic {
-                    credentials {
-                        BasicAuthCredentials(
-                            username = credentialProvider.getUsername(),
-                            password = credentialProvider.getPassword()
-                        )
-                    }
-                    sendWithoutRequest { true }
-                }
-            }
             defaultRequest {
-                url(credentialProvider.getUrl())
+                url("https://dhis2.gov.st/tracker/")
             }
 
             engine {
-                requestTimeout = 10000L
+                preconfigured = OkHttpClient.Builder()
+                    .addInterceptor(basicAuthInterceptor)
+                    .build()
             }
         }
     }
