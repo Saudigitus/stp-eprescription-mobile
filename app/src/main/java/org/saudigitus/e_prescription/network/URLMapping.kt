@@ -44,14 +44,14 @@ object URLMapping {
         program: String,
         ouMode: String = "ACCESSIBLE"
     ): String {
-        return "trackedEntityInstances.json?fields=trackerEntityInstance,enrollments[enrollment,events[event,programStage,status,dataValues[dataElement,value]]]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
+        return "/tracker/api/trackedEntityInstances.json?fields=trackerEntityInstance,enrollments[enrollment,events[event,programStage,status,dataValues[dataElement,value]]]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
     }
 
     fun dataElementUrl(dataElement: String): String {
-        return "dataElements/${dataElement}.json?fields=id,displayFormName"
+        return "/tracker/api/dataElements/${dataElement}.json?fields=id,displayFormName"
     }
 
     fun optionsUrl(code: String): String {
-        return "options.json?fields=code,name,optionSet&filter=code:eq:${code}&filter=optionSet.id:eq:yPNaEEL1t7S&paging=false"
+        return "/tracker/api/options.json?fields=code,name,optionSet&filter=code:eq:${code}&filter=optionSet.id:eq:yPNaEEL1t7S&paging=false"
     }
 }
