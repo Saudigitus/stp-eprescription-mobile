@@ -1,14 +1,19 @@
 package org.saudigitus.e_prescription.network
 
+import android.util.Log
 import okhttp3.Credentials
 import okhttp3.Interceptor
+import org.saudigitus.e_prescription.utils.Constants.AUTH_HEADER
 
-val basicAuthInterceptor =  Interceptor { chain ->
-    val AUTH_HEADER = "Authorization"
-    val username = "something"
-    val password = "password"
+fun basicAuthInterceptor(credentialProvider: CredentialProvider) =  Interceptor { chain ->
+    val credentials = Credentials.basic(
+        credentialProvider.getUsername(),
+        credentialProvider.getPassword()
+    )
 
-    val credentials = Credentials.basic(username, password)
+    Log.e("basicAuthInterceptor", "basicAuthInterceptor: ${credentialProvider.getUsername()} -> ${credentialProvider.getPassword()}")
+
+    Log.e("basicAuthInterceptor", "Request Auth Header: $credentials")
 
     val request = chain.request().newBuilder()
         .addHeader(AUTH_HEADER, credentials)

@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineDispatcher
 import org.saudigitus.e_prescription.data.local.PreferenceProvider
 import org.saudigitus.e_prescription.data.local.repository.PreferenceProviderImpl
@@ -14,6 +13,7 @@ import org.saudigitus.e_prescription.data.remote.repository.PrescriptionReposito
 import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepository
 import org.saudigitus.e_prescription.data.remote.repository.impl.PrescriptionRepositoryImpl
 import org.saudigitus.e_prescription.data.remote.repository.impl.UserManagerRepositoryImpl
+import org.saudigitus.e_prescription.network.HttpClientHelper
 import org.saudigitus.e_prescription.network.NetworkUtils
 import javax.inject.Singleton
 
@@ -25,10 +25,15 @@ object AppModule {
     @Singleton
     fun providesUserManagerImpl(
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-        httpClient: HttpClient,
-        networkUtils: NetworkUtils
-    ): UserManagerRepository = UserManagerRepositoryImpl(httpClient, networkUtils, ioDispatcher)
-
+        httpClientHelper: HttpClientHelper,
+        networkUtils: NetworkUtils,
+        preferenceProvider: PreferenceProvider
+    ): UserManagerRepository = UserManagerRepositoryImpl(
+        networkUtils,
+        httpClientHelper,
+        preferenceProvider,
+        ioDispatcher
+    )
 
     @Provides
     @Singleton
@@ -39,7 +44,7 @@ object AppModule {
     @Singleton
     fun providePrescriptionRepository(
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-        httpClient: HttpClient,
+        httpClientHelper: HttpClientHelper,
         networkUtils: NetworkUtils
-    ): PrescriptionRepository = PrescriptionRepositoryImpl(httpClient, networkUtils, ioDispatcher)
+    ): PrescriptionRepository = PrescriptionRepositoryImpl(networkUtils, httpClientHelper,  ioDispatcher)
 }

@@ -53,4 +53,6 @@ object URLMapping {
     ): String {
         return "/tracker/api/events/${event}/${dataElement}"
     }
+
+    fun resourcesUrl(baseUrl: String) = "${baseUrl}/tracker/api/resources.json"
 }

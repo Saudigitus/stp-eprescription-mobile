@@ -9,6 +9,8 @@ object Constants {
     const val DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val DATE_FORMAT = "yyyy-MM-dd"
 
+    const val AUTH_HEADER = "Authorization"
+
     // SyncData parameters
     const val INITIAL_SYNC = "INITIAL_SYNC"
     const val ROUTINE_SYNC = "ROUTINE_SYNC"
