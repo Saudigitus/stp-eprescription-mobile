@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoginViewModel
 @Inject constructor(
     private val userManager: UserManagerRepository,
-) : ViewModel() {
+): ViewModel() {
 
     private val _loginUiState = MutableStateFlow(LoginUiState(serverUrl = "https://"))
     val loginUiState = _loginUiState.asStateFlow()

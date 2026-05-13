@@ -83,12 +83,14 @@ class PrescriptionRepositoryImpl(
         return@withContext eventDataMap.keys.map { key ->
             val dataValues = eventDataMap[Pair(key.first, key.second)] ?: emptyList()
 
-            val optionCode = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_NAME }.value
-            val posology = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_POSOLOGY }.value
-            val requestedQtd = dataValues.first { it.dataElement == UIDMapping.DATA_ELEMENT_QTD_REQ }
-                .value.toIntOrNull() ?: 0
+            val optionCode = dataValues.firstOrNull { it.dataElement == UIDMapping.DATA_ELEMENT_NAME }?.value
+            val posology = dataValues.firstOrNull { it.dataElement == UIDMapping.DATA_ELEMENT_POSOLOGY }?.value
+            val requestedQtd = dataValues.firstOrNull { it.dataElement == UIDMapping.DATA_ELEMENT_QTD_REQ }
+                ?.value?.toIntOrNull() ?: 0
+            val completedQtd = dataValues.firstOrNull { it.dataElement == UIDMapping.DATA_ELEMENT_QTD_GIVEN }
+                ?.value?.toIntOrNull() ?: 0
 
-            val name = get<OptionResponse>(optionsUrl(optionCode))
+            val name = get<OptionResponse>(optionsUrl(optionCode.orEmpty()))
                 .getOrNull()
                 ?.options
                 ?.find { it.code == optionCode }
@@ -98,8 +100,9 @@ class PrescriptionRepositoryImpl(
                 uid = key.first,
                 ou = key.second,
                 name = name,
-                posology = posology,
+                posology = posology.orEmpty(),
                 requestedQtd = requestedQtd,
+                completedQtd = completedQtd,
                 isCompleted = true
             )
         }

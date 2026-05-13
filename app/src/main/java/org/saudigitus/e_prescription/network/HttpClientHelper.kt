@@ -30,7 +30,6 @@ class HttpClientHelper @Inject constructor(
             }
 
             engine {
-
                 preconfigured = OkHttpClient.Builder()
                     .addInterceptor(basicAuthInterceptor(credentialProvider))
                     .build()

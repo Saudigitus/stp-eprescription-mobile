@@ -1,6 +1,7 @@
 package org.saudigitus.e_prescription.presentation.screens.prescriptions
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,7 +60,9 @@ fun PrescriptionScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cache by viewModel.cacheGivenMedicines.collectAsStateWithLifecycle()
 
-    viewModel.loadData(uid)
+    LaunchedEffect(Unit) {
+        viewModel.loadData(uid)
+    }
 
     if (uiState.displayErrors && uiState.errorState != null) {
         ErrorBottomSheet(uiState.errorState!!) {
@@ -157,7 +160,8 @@ private fun PrescriptionUI(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -175,7 +179,8 @@ private fun PrescriptionUI(
                 Text(
                     text = stringResource(R.string.prescription_list),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .align(Alignment.Start)
                         .padding(horizontal = 16.dp)
                 )
@@ -188,7 +193,8 @@ private fun PrescriptionUI(
                     ) {
                         items(uiState.prescriptions, key = { it.uid }) {
                             PrescriptionCard(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(vertical = 8.dp),
                                 prescription = it,
                                 inputFieldModels = inputFieldModels
@@ -220,12 +226,19 @@ private fun PrescriptionUI(
                                 fontSize = MaterialTheme.typography.titleMedium.fontSize
                             ),
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
                         )
                     }
                 }
             } else {
-                CircularProgressIndicator()
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }

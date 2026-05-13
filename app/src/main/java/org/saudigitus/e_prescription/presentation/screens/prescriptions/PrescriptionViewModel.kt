@@ -17,6 +17,7 @@ import org.saudigitus.e_prescription.data.remote.repository.PrescriptionReposito
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.BottomSheetState
 import org.saudigitus.e_prescription.presentation.screens.prescriptions.model.InputFieldModel
 import org.saudigitus.e_prescription.utils.UIDMapping
+import org.saudigitus.e_prescription.utils.generateFieldModel
 import org.saudigitus.e_prescription.utils.toPrescriptionError
 import javax.inject.Inject
 
@@ -58,6 +59,8 @@ class PrescriptionViewModel
 
             val patientResult = patientDeferred.await()
             val prescriptionsResult = prescriptionsDeferred.await()
+
+            _cacheGivenMedicines.value = prescriptionsResult.generateFieldModel()
 
             viewModelState.update {
                 it.copy(

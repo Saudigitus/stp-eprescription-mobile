@@ -54,4 +54,6 @@ object URLMapping {
         val server = baseUrl.removeSuffix("/").trim()
         return "${server}/api/me.json"
     }
+
+    fun resourcesUrl(baseUrl: String) = "${baseUrl}/tracker/api/resources.json"
 }
