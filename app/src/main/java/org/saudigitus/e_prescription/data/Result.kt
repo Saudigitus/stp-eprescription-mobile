@@ -1,5 +1,7 @@
 package org.saudigitus.e_prescription.data
 
+import org.saudigitus.e_prescription.network.exception.NetworkException
+
 /*
  * Copyright 2020 The Android Open Source Project
  *
@@ -22,7 +24,7 @@ package org.saudigitus.e_prescription.data
  */
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+    data class Error(val exception: NetworkException) : Result<Nothing>()
 }
 
 fun <T> Result<T>.successOr(fallback: T): T {
@@ -37,3 +39,9 @@ val Result<*>.failed
 
 val Result<*>.next
     get() = this is Result.Success && data == true
+
+fun <T> Result<T>.getOrNull(): T? {
+    return if (this is Result.Success) {
+        this.data
+    } else  null
+}

@@ -1,9 +1,11 @@
 package org.saudigitus.e_prescription.data.remote.repository.impl
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.saudigitus.e_prescription.data.getOrNull
 import org.saudigitus.e_prescription.data.model.Patient
 import org.saudigitus.e_prescription.data.model.Prescription
 import org.saudigitus.e_prescription.data.model.put.DataValue
@@ -11,6 +13,7 @@ import org.saudigitus.e_prescription.data.model.put.UpdateEvent
 import org.saudigitus.e_prescription.data.model.response.OptionResponse
 import org.saudigitus.e_prescription.data.model.response.TrackedEntityInstanceResponse
 import org.saudigitus.e_prescription.data.remote.repository.PrescriptionRepository
+import org.saudigitus.e_prescription.data.succeeded
 import org.saudigitus.e_prescription.network.BaseNetwork
 import org.saudigitus.e_prescription.network.HttpClientHelper
 import org.saudigitus.e_prescription.network.NetworkUtils
@@ -24,10 +27,11 @@ import org.saudigitus.e_prescription.utils.UIDMapping.attributes
 import org.saudigitus.e_prescription.utils.getByAttr
 
 class PrescriptionRepositoryImpl(
+    context: Context,
     override val networkUtil: NetworkUtils,
     httpClientHelper: HttpClientHelper,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): BaseNetwork(httpClientHelper.httpClient(), networkUtil), PrescriptionRepository {
+): BaseNetwork(context, httpClientHelper.httpClient(), networkUtil), PrescriptionRepository {
     override suspend fun savePrescription(
         tei: String,
         ou: String,
@@ -53,9 +57,9 @@ class PrescriptionRepositoryImpl(
         val response = put<Unit, UpdateEvent>(
             putEventUrl(event, dataElement),
             data
-        ).getOrNull()
+        )
 
-        return@withContext response?.first == 200 || response?.first == 201
+        return@withContext response.succeeded
     }
 
     override suspend fun getPrescriptions(
