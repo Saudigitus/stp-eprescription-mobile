@@ -18,11 +18,35 @@ import androidx.compose.ui.unit.dp
 import org.saudigitus.e_prescription.R
 import org.saudigitus.e_prescription.data.model.Patient
 
+private data class UiField(
+    val label: String,
+    val value: String?
+)
+
 @Composable
 fun TeiCard(
     modifier: Modifier = Modifier,
     patient: Patient?,
 ) {
+    val fields = listOf(
+        UiField(
+            label = stringResource(R.string.process_number),
+            value = patient?.processNumber?.second
+        ),
+        UiField(
+            label = stringResource(R.string.birthdate),
+            value = patient?.birthdate?.second
+        ),
+        UiField(
+            label = stringResource(R.string.gender),
+            value = patient?.gender?.second
+        ),
+        UiField(
+            label = stringResource(R.string.address),
+            value = patient?.residence?.second
+        )
+    ).filter { !it.value.isNullOrBlank() }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,80 +66,38 @@ fun TeiCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = patient?.name?.first ?: stringResource(R.string.patient_name),
+                    text = patient?.name?.first
+                        ?: stringResource(R.string.patient_name),
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+                        fontWeight = FontWeight.Bold
                     )
                 )
+
                 Text(
-                    text = "${patient?.name?.second} ${patient?.surname?.second}",
+                    text = listOfNotNull(
+                        patient?.name?.second,
+                        patient?.surname?.second
+                    ).joinToString(" ").ifBlank { "---" },
                     style = MaterialTheme.typography.titleSmall
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = patient?.processNumber?.first ?: stringResource(R.string.process_number),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+
+            fields.forEach { field ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = field.label,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
-                Text(
-                    text = patient?.processNumber?.second ?: "---",
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = patient?.birthdate?.first ?: stringResource(R.string.birthdate),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+                    Text(
+                        text = field.value ?: "---",
+                        style = MaterialTheme.typography.titleSmall
                     )
-                )
-                Text(
-                    text = patient?.birthdate?.second ?: "---",
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = patient?.gender?.first ?: stringResource(R.string.gender),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    )
-                )
-                Text(
-                    text = patient?.gender?.second ?: "---",
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = patient?.residence?.first ?: stringResource(R.string.address),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
-                    )
-                )
-                Text(
-                    text = patient?.residence?.second ?: "---",
-                    style = MaterialTheme.typography.titleSmall
-                )
+                }
             }
         }
     }

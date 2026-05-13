@@ -114,4 +114,8 @@
     <string name="menu" translatable="false">Menu</string>
     <string name="sync_metadata">Synchronise metadata</string>
     <string name="no_prescriptions">There are no prescriptions on record for this patient.</string>
+    <string name="something_went_wrong_while_logging">Something went wrong while logging in. Please try again.</string>
+    <string name="incorrect_username_or_password">Incorrect username or password. Make sure your details are correct and try again.</string>
+    <string name="something_went_e">Something went wrong. Please try again in a moment.</string>
+    <string name="something_went_wrong">Something went wrong. Please try again in a moment.</string>
 </resources>

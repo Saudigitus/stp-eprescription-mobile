@@ -1,6 +1,7 @@
 package org.saudigitus.e_prescription.data.remote.repository.impl
 
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,34 +11,43 @@ import org.saudigitus.e_prescription.data.remote.repository.UserManagerRepositor
 import org.saudigitus.e_prescription.network.BaseNetwork
 import org.saudigitus.e_prescription.network.HttpClientHelper
 import org.saudigitus.e_prescription.network.NetworkUtils
-import org.saudigitus.e_prescription.network.URLMapping.resourcesUrl
+import org.saudigitus.e_prescription.network.URLMapping.meUrl
+import org.saudigitus.e_prescription.network.exception.NetworkException
 import javax.inject.Inject
 
 class UserManagerRepositoryImpl
 @Inject constructor(
+    override val context: Context,
     override val networkUtil: NetworkUtils,
     httpClientHelper: HttpClientHelper,
     private val preferenceProvider: PreferenceProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-): BaseNetwork(httpClientHelper.httpClient(), networkUtil), UserManagerRepository {
+): BaseNetwork(context, httpClientHelper.httpClient(), networkUtil), UserManagerRepository {
     override suspend fun login(
         server: String,
         username: String,
         password: String
     ) = withContext(ioDispatcher) {
         try {
-            val isLogged = dhis2Login(resourcesUrl(server), username, password)
-                .getOrElse { false }
+            val baseUrl = if (server.endsWith("/")) {
+                server.trim()
+            } else "$server/"
 
-            if (isLogged) {
-                preferenceProvider.setValue("URL", server)
-                preferenceProvider.setValue("USERNAME", username)
-                preferenceProvider.setValue("PASSWORD", password)
+            when (val response = dhis2Login(meUrl(baseUrl), username, password)) {
+                is Result.Success -> {
+                    preferenceProvider.setValue("URL", baseUrl)
+                    preferenceProvider.setValue("USERNAME", username)
+                    preferenceProvider.setValue("PASSWORD", password)
+
+                    Result.Success(true)
+                }
+
+                is Result.Error -> {
+                    Result.Error(response.exception)
+                }
             }
-
-            return@withContext Result.Success(isLogged)
         } catch (e: Exception) {
-            return@withContext Result.Error(e)
+            return@withContext Result.Error(NetworkException.Unknown(e.message))
         }
     }
 

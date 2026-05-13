@@ -8,7 +8,7 @@ object URLMapping {
         program: String,
         ouMode: String = "ACCESSIBLE"
     ): String {
-        return "/tracker/api/trackedEntityInstances.json?fields=relationships[relationshipType,from,to]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
+        return "api/trackedEntityInstances.json?fields=relationships[relationshipType,from,to]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
     }
 
     /**
@@ -22,7 +22,7 @@ object URLMapping {
         program: String,
         ouMode: String = "ACCESSIBLE"
     ): String {
-        return "/tracker/api/trackedEntityInstances.json?fields=trackedEntityInstance,attributes[attribute,displayName,value]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
+        return "api/trackedEntityInstances.json?fields=trackedEntityInstance,attributes[attribute,displayName,value]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
     }
 
     /**
@@ -36,23 +36,22 @@ object URLMapping {
         program: String,
         ouMode: String = "ACCESSIBLE"
     ): String {
-        return "/tracker/api/trackedEntityInstances.json?fields=trackerEntityInstance,enrollments[enrollment,events[event,programStage,status,dataValues[dataElement,value]]]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
-    }
-
-    fun dataElementUrl(dataElement: String): String {
-        return "/tracker/api/dataElements/${dataElement}.json?fields=id,displayFormName"
+        return "api/trackedEntityInstances.json?fields=trackerEntityInstance,enrollments[enrollment,events[event,programStage,status,dataValues[dataElement,value]]]&trackedEntityInstance=${tei}&program=${program}&ouMode=${ouMode}"
     }
 
     fun optionsUrl(code: String): String {
-        return "/tracker/api/options.json?fields=code,name,optionSet&filter=code:eq:${code}&filter=optionSet.id:eq:yPNaEEL1t7S&paging=false"
+        return "api/options.json?fields=code,name,optionSet&filter=code:eq:${code}&filter=optionSet.id:eq:yPNaEEL1t7S&paging=false"
     }
 
     fun putEventUrl(
         event: String,
         dataElement: String,
     ): String {
-        return "/tracker/api/events/${event}/${dataElement}"
+        return "api/events/${event}/${dataElement}"
     }
 
-    fun resourcesUrl(baseUrl: String) = "${baseUrl}/tracker/api/resources.json"
+    fun meUrl(baseUrl: String): String {
+        val server = baseUrl.removeSuffix("/").trim()
+        return "${server}/api/me.json"
+    }
 }

@@ -24,11 +24,13 @@ object AppModule {
     @Provides
     @Singleton
     fun providesUserManagerImpl(
+        @ApplicationContext context: Context,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         httpClientHelper: HttpClientHelper,
         networkUtils: NetworkUtils,
         preferenceProvider: PreferenceProvider
     ): UserManagerRepository = UserManagerRepositoryImpl(
+        context,
         networkUtils,
         httpClientHelper,
         preferenceProvider,
@@ -43,8 +45,10 @@ object AppModule {
     @Provides
     @Singleton
     fun providePrescriptionRepository(
+        @ApplicationContext context: Context,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         httpClientHelper: HttpClientHelper,
         networkUtils: NetworkUtils
-    ): PrescriptionRepository = PrescriptionRepositoryImpl(networkUtils, httpClientHelper,  ioDispatcher)
+    ): PrescriptionRepository =
+        PrescriptionRepositoryImpl(context, networkUtils, httpClientHelper, ioDispatcher)
 }
