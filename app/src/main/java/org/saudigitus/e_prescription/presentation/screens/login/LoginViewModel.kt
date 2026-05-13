@@ -3,7 +3,6 @@ package org.saudigitus.e_prescription.presentation.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -60,22 +59,21 @@ class LoginViewModel
         viewModelScope.launch {
             progressLoading(true)
 
-            val result = async {
-                userManager.login(
-                    loginUiState.value.serverUrl,
-                    loginUiState.value.username,
-                    loginUiState.value.password
-                )
-            }
+            val result = userManager.login(
+                loginUiState.value.serverUrl,
+                loginUiState.value.username,
+                loginUiState.value.password
+            )
 
-            when (val isSuccess = result.await()) {
+            when (result) {
                 is Result.Success -> {
-                    _loginResult.emit(LoginResult(success = isSuccess.data))
-
+                    progressLoading(false)
+                    _loginResult.emit(LoginResult(success = result.data))
                 }
+
                 is Result.Error -> {
                     progressLoading(false)
-                    _loginResult.emit(LoginResult(error = isSuccess.exception.message))
+                    _loginResult.emit(LoginResult(error = result.exception.message))
                 }
             }
         }

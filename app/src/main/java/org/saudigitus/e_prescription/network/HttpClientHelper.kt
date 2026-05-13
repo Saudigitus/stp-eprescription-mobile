@@ -2,7 +2,6 @@ package org.saudigitus.e_prescription.network
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -18,9 +17,6 @@ class HttpClientHelper @Inject constructor(
 ) {
     fun httpClient(): HttpClient {
         return HttpClient(OkHttp){
-            install(DefaultRequest){
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-            }
             install(ContentNegotiation) {
                 jackson()
             }
@@ -30,6 +26,7 @@ class HttpClientHelper @Inject constructor(
             }
             defaultRequest {
                 url(credentialProvider.getUrl())
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
 
             engine {
